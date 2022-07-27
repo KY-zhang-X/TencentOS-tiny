@@ -1,7 +1,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "tos_k.h"
 
 #ifndef MICROPY_CONFIG_ROM_LEVEL
 // #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)

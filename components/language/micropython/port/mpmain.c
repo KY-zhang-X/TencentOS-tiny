@@ -10,14 +10,17 @@
 #define MP_HEAP_SIZE        (4 * 1024)
 
 // MicroPython GC heap
-__STATIC__ char *heap;
+__STATIC__ char *heap = K_NULL;
+__STATIC__ void *stack_top = K_NULL;
 
 int mp_main(void) 
 {
     // Initialise the MicroPython runtime
-    mp_stack_ctrl_init();
-
-    // mp_shell_init(MP_SHELL_BUF_SIZE, HAL_UART_PORT_2);
+    // mp_stack_ctrl_init();
+    volatile int stack_dummy;
+    stack_top = (void *)&stack_dummy;
+    mp_stack_set_top(stack_top);
+    mp_stack_set_limit(tos_task_curr_task_get()->stk_size - 1024);
 
     if (!heap) {
         heap = (char *)tos_mmheap_alloc(MP_HEAP_SIZE);
@@ -44,11 +47,8 @@ int mp_main(void)
     mp_printf(&mp_plat_print, "exit repl\n");
     // Deinitialise the runtime.
     gc_sweep_all();
-    // tos_mmheap_free(heap);
 
     mp_deinit();
-
-    // mp_shell_deinit();
 
     return 0;
 }
@@ -64,8 +64,8 @@ void nlr_jump_fail(void *val) {
 // Do a garbage collection cycle
 void gc_collect(void) {
     gc_collect_start();
-		uintptr_t sp = (uint32_t)tos_task_curr_task_get()->sp;
-    gc_collect_root((void **)sp, ((uintptr_t)MP_STATE_THREAD(stack_top) - (uintptr_t)sp) / sizeof(uintptr_t));
+		uintptr_t stack_base = (uint32_t)tos_task_curr_task_get()->stk_base;
+    gc_collect_root((void **)stack_base, ((uintptr_t)MP_STATE_THREAD(stack_top) - (uintptr_t)stack_base) / sizeof(uintptr_t));
     gc_collect_end();
 }
 
