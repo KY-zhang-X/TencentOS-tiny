@@ -1415,6 +1415,71 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>micropython/extmod</GroupName>
+          <Files>
+            <File>
+              <FileName>modframebuf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modframebuf.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduasyncio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduasyncio.c</FilePath>
+            </File>
+            <File>
+              <FileName>modubinascii.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modubinascii.c</FilePath>
+            </File>
+            <File>
+              <FileName>moductypes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moductypes.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduhashlib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduhashlib.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduheapq.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduheapq.c</FilePath>
+            </File>
+            <File>
+              <FileName>modujson.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modujson.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduos.c</FilePath>
+            </File>
+            <File>
+              <FileName>modurandom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modurandom.c</FilePath>
+            </File>
+            <File>
+              <FileName>modure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modure.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduselect.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduselect.c</FilePath>
+            </File>
+            <File>
+              <FileName>moduzlib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\moduzlib.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
