@@ -16,7 +16,9 @@ INC = $(addprefix -I,\
 	$(BUILD) \
 	)
 
-CFLAGS = $(INC)
+DEF_C = -DMP_GEN_HDR
+
+CFLAGS = $(INC) $(DEF_C)
 
 # Set SRC_QSTR
 SHARED_SRC_C = $(addprefix $(TOP)/shared/,\

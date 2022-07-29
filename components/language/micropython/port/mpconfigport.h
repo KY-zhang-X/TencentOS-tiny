@@ -53,10 +53,9 @@
 #define MICROPY_PY_GC_COLLECT_RETVAL    (0)
 #define MICROPY_PY_IO                   (0)
 #define MICROPY_PY_IO_BUFFEREDWRITER    (0)
-// #define MICROPY_PY_SYS_MODULES          (1)
 // TODO: lgammaf() is not supported
 #define MICROPY_PY_MATH_SPECIAL_FUNCTIONS (0)
-#define MICROPY_PY_THREAD               (0)
+#define MICROPY_PY_THREAD               (1)
 
 // Extended modules
 // #define MICROPY_PY_UTIMEQ               (0)
