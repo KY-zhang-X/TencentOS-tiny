@@ -5,9 +5,15 @@
 #include "py/builtin.h"
 #include "shared/runtime/gchelper.h"
 #include "shared/runtime/pyexec.h"
+
+#if MICROPY_VFS_TOS
+#include "extmod/vfs.h"
+#include "vfs_tos.h"
+#endif
+
 #include "tos_k.h"
 
-#define MP_HEAP_SIZE        (4 * 1024)
+#define MP_HEAP_SIZE        (8 * 1024)
 
 // MicroPython GC heap
 __STATIC__ char *heap = K_NULL;
@@ -32,6 +38,18 @@ int mp_main(void)
     
     mp_init();
     
+    #if MICROPY_VFS_TOS
+    {
+        mp_obj_t root = mp_obj_new_str("/fs", 3);
+        mp_obj_t args[2] = {
+            mp_type_vfs_tos.make_new(&mp_type_vfs_tos, 1, 0, &root),
+            MP_OBJ_NEW_QSTR(MP_QSTR__slash_),
+        };
+        mp_vfs_mount(2, args, (mp_map_t *)&mp_const_empty_map);
+        MP_STATE_VM(vfs_cur) = MP_STATE_VM(vfs_mount_table);
+    }
+    #endif
+
     // Start a normal REPL; will exit when ctrl-D is entered on a blank line.
     for (;;) {
         if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
@@ -69,11 +87,24 @@ void gc_collect(void) {
     gc_collect_end();
 }
 
+#if !(MICROPY_VFS)
 // There is no filesystem so stating returns noting
 mp_import_stat_t mp_import_stat(const char *path) {
     return MP_IMPORT_STAT_NO_EXIST;
 }
+#endif /* MICROPY_VFS */
 
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
     mp_raise_OSError(MP_ENOENT);
 }
+
+#if (MICROPY_DEBUG_VERBOSE)
+#include <stdarg.h>
+int DEBUG_printf(const char *fmt, ...) {
+    va_list ap;
+    va_start(ap, fmt);
+    int ret = printf(fmt, ap);
+    va_end(ap);
+    return ret;
+}
+#endif /* MICRO_PY_DEBUG_VERBOSE */

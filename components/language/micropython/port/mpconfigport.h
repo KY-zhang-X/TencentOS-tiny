@@ -19,6 +19,7 @@
 // Compiler configuration
 #define MICROPY_ENABLE_COMPILER         (1)
 #define MICROPY_COMP_MODULE_CONST       (0)
+#define MICROPY_DEBUG_VERBOSE           (0)
 
 // Python internal features
 #define MICROPY_READER_POSIX            (0)
@@ -39,7 +40,8 @@
 #define MICROPY_USE_INTERNAL_PRINTF     (0)
 #define MICROPY_SCHEDULER_DEPTH         (4)
 #define MICROPY_PY_SYS_STDIO_BUFFER     (0)
-#define MICROPY_VFS                     (0)
+#define MICROPY_VFS                     (1)
+#define MICROPY_VFS_TOS                 (1)
 #define MICROPY_VFS_POSIX               (0)
 #define MICROPY_VFS_FAT                 (0)
 
@@ -51,7 +53,7 @@
 #define MICROPY_PY_ALL_INPLACE_SPECIAL_METHODS (1)
 #define MICROPY_PY_BUILTINS_HELP_TEXT   tencentos_tiny_help_text
 #define MICROPY_PY_GC_COLLECT_RETVAL    (0)
-#define MICROPY_PY_IO                   (0)
+// #define MICROPY_PY_IO                   (0)
 #define MICROPY_PY_IO_BUFFEREDWRITER    (0)
 // #define MICROPY_PY_SYS_MODULES          (1)
 // TODO: lgammaf() is not supported
@@ -64,8 +66,20 @@
 // #define MICROPY_PY_UHASHLIB_SHA1        (0)
 // #define MICROPY_PY_UHASHLIB_SHA256      (1)
 // #define MICROPY_PY_UCRYPTOLIB           (0)
-// TODO: ujson module depends on vfs
-#define MICROPY_PY_UJSON                (0)
+// #define MICROPY_PY_UJSON                (0)
+#define MICROPY_PY_UOS_UNAME            (0)
+#if MICROPY_VFS_TOS
+#define mp_type_fileio mp_type_vfs_tos_fileio
+#define mp_type_textio mp_type_vfs_tos_textio
+#elif MICROPY_VFS_FAT
+#define mp_type_fileio mp_type_vfs_fat_fileio
+#define mp_type_textio mp_type_vfs_fat_textio
+#elif MICROPY_VFS_POSIX
+#define mp_type_fileio mp_type_vfs_posix_fileio
+#define mp_type_textio mp_type_vfs_posix_textio
+#endif
+
+
 
 #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
 
@@ -74,6 +88,8 @@
 typedef int mp_int_t; // must be pointer size
 typedef unsigned int mp_uint_t; // must be pointer size
 typedef long mp_off_t;
+#define UINT_FMT "%u"
+#define INT_FMT "%d"
 
 #if MICROPY_PY_THREAD
 #define MICROPY_EVENT_POLL_HOOK \
