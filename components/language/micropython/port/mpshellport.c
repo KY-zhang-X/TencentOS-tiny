@@ -1,4 +1,5 @@
 #include "mpshellport.h"
+#include "usart.h"
 
 static mp_shell_ctl_t mp_shell_ctl;
 #define MP_SHELL_CTL ((mp_shell_ctl_t *)(&mp_shell_ctl))
@@ -7,6 +8,12 @@ int mp_shell_getchar(void)
 {
     uint8_t chr;
     k_err_t err;
+
+    /*===========================================*/
+    // FIXME: There must be a better implementation
+    extern uint8_t shell_data;
+    HAL_UART_Receive_IT(&huart2, &shell_data, 1);
+    /*===========================================*/
 
     if (tos_sem_pend(&MP_SHELL_CTL->shell_rx_sem, TOS_TIME_FOREVER) != K_ERR_NONE) {
         return -1;

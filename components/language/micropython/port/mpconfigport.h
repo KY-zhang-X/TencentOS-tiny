@@ -54,7 +54,7 @@
 #define MICROPY_PY_BUILTINS_HELP_TEXT   tencentos_tiny_help_text
 #define MICROPY_PY_GC_COLLECT_RETVAL    (0)
 // #define MICROPY_PY_IO                   (0)
-#define MICROPY_PY_IO_BUFFEREDWRITER    (0)
+// #define MICROPY_PY_IO_BUFFEREDWRITER    (0)
 // #define MICROPY_PY_SYS_MODULES          (1)
 // TODO: lgammaf() is not supported
 #define MICROPY_PY_MATH_SPECIAL_FUNCTIONS (0)
@@ -67,7 +67,7 @@
 // #define MICROPY_PY_UHASHLIB_SHA256      (1)
 // #define MICROPY_PY_UCRYPTOLIB           (0)
 // #define MICROPY_PY_UJSON                (0)
-#define MICROPY_PY_UOS_UNAME            (0)
+#define MICROPY_PY_UOS_UNAME            (1)
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
 #define mp_type_textio mp_type_vfs_tos_textio
@@ -121,6 +121,7 @@ typedef long mp_off_t;
 
 #define MICROPY_HW_BOARD_NAME                       "BearPi"
 #define MICROPY_HW_MCU_NAME                         "STM32F431RC"
+#define MICROPY_PY_SYS_PLATFORM                     "TencentOS-tiny"
 
 #define MP_STATE_PORT MP_STATE_VM
 
