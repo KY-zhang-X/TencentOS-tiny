@@ -1630,6 +1630,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\sys_stdio_mphal.c</FilePath>
             </File>
+            <File>
+              <FileName>interrupt_char.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\interrupt_char.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1793,6 +1798,16 @@
               <FileName>vfs.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\vfs.c</FilePath>
+            </File>
+            <File>
+              <FileName>vfs_reader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\vfs_reader.c</FilePath>
+            </File>
+            <File>
+              <FileName>uos_dupterm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\uos_dupterm.c</FilePath>
             </File>
           </Files>
         </Group>

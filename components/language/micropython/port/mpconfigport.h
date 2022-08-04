@@ -23,7 +23,7 @@
 
 // Python internal features
 #define MICROPY_READER_POSIX            (0)
-#define MICROPY_READER_VFS              (0)
+#define MICROPY_READER_VFS              (1)
 #define MICROPY_ENABLE_GC               (1)
 #define MICROPY_HELPER_REPL             (1)
 // #define MICROPY_TRACKED_ALLOC           (MICROPY_SSL_MBEDTLS)
@@ -31,7 +31,7 @@
 #define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF (1)
 #define MICROPY_REPL_INFO               (0)
 #define MICROPY_LONGINT_IMPL            (MICROPY_LONGINT_IMPL_MPZ)
-#define MICROPY_WARNINGS                (0)
+#define MICROPY_WARNINGS                (1)
 #define MICROPY_FLOAT_IMPL              (MICROPY_FLOAT_IMPL_FLOAT)
 // #define MICROPY_STREAMS_POSIX_API       (1)
 #define MICROPY_MODULE_FROZEN_STR       (0)
@@ -39,7 +39,7 @@
 #define MICROPY_USE_INTERNAL_ERRNO      (1)
 #define MICROPY_USE_INTERNAL_PRINTF     (0)
 #define MICROPY_SCHEDULER_DEPTH         (4)
-#define MICROPY_PY_SYS_STDIO_BUFFER     (0)
+#define MICROPY_PY_SYS_STDIO_BUFFER     (1)
 #define MICROPY_VFS                     (1)
 #define MICROPY_VFS_TOS                 (1)
 #define MICROPY_VFS_POSIX               (0)
@@ -67,7 +67,10 @@
 // #define MICROPY_PY_UHASHLIB_SHA256      (1)
 // #define MICROPY_PY_UCRYPTOLIB           (0)
 // #define MICROPY_PY_UJSON                (0)
+#define MICROPY_PY_OS_DUPTERM           (1)
+#define MICROPY_PY_UOS_DUPTERM_NOTIFY   (0)
 #define MICROPY_PY_UOS_UNAME            (1)
+
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
 #define mp_type_textio mp_type_vfs_tos_textio

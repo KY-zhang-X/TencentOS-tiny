@@ -7,6 +7,7 @@
 #include "py/runtime.h"
 #include "py/stream.h"
 #include "vfs_tos.h"
+#include "unistd.h"
 #if !(MP_GEN_HDR)
 #include "tos_vfs.h"
 #endif
