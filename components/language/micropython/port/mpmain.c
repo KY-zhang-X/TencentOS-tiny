@@ -1,3 +1,5 @@
+#include "py/mpconfig.h"
+#include "py/mpthread.h"
 #include "py/compile.h"
 #include "py/gc.h"
 #include "py/mperrno.h"
@@ -7,7 +9,7 @@
 #include "shared/runtime/pyexec.h"
 #include "tos_k.h"
 
-#define MP_HEAP_SIZE        (4 * 1024)
+#define MP_HEAP_SIZE        (8 * 1024)
 
 // MicroPython GC heap
 __STATIC__ char *heap = K_NULL;
@@ -18,9 +20,12 @@ int mp_main(void)
     // Initialise the MicroPython runtime
     // mp_stack_ctrl_init();
     volatile int stack_dummy;
+    #if MICROPY_PY_THREAD
+    mp_thread_init();
+    #endif
     stack_top = (void *)&stack_dummy;
     mp_stack_set_top(stack_top);
-    mp_stack_set_limit(tos_task_curr_task_get()->stk_size - 1024);
+    mp_stack_set_limit(tos_task_curr_task_get()->stk_size - MP_THREAD_STACK_LIMIT_MARGIN);
 
     if (!heap) {
         heap = (char *)tos_mmheap_alloc(MP_HEAP_SIZE);
@@ -45,6 +50,11 @@ int mp_main(void)
         }
     }
     mp_printf(&mp_plat_print, "exit repl\n");
+
+    #if MICROPY_PY_THREAD
+    mp_thread_deinit();
+    #endif
+    
     // Deinitialise the runtime.
     gc_sweep_all();
 
@@ -64,8 +74,15 @@ void nlr_jump_fail(void *val) {
 // Do a garbage collection cycle
 void gc_collect(void) {
     gc_collect_start();
-		uintptr_t stack_base = (uint32_t)tos_task_curr_task_get()->stk_base;
+
+    uintptr_t stack_base = (uint32_t)tos_task_curr_task_get()->stk_base;
     gc_collect_root((void **)stack_base, ((uintptr_t)MP_STATE_THREAD(stack_top) - (uintptr_t)stack_base) / sizeof(uintptr_t));
+    
+    // trace root pointers from any threads
+    #if MICROPY_PY_THREAD
+    mp_thread_gc_others();
+    #endif
+
     gc_collect_end();
 }
 
@@ -77,3 +94,22 @@ mp_import_stat_t mp_import_stat(const char *path) {
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
     mp_raise_OSError(MP_ENOENT);
 }
+
+#if MICROPY_DEBUG_VERBOSE
+#include <stdio.h>
+#include <stdarg.h>
+int DEBUG_printf(const char *format, ...)
+{
+    static char log_buf[512];
+    va_list args;
+
+    /* args point to the first variable parameter */
+    va_start(args, format);
+    /* must use vprintf to print */
+    vsprintf(log_buf, format, args);
+    printf("%s", log_buf);
+    va_end(args);
+
+    return 0;
+}
+#endif

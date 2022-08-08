@@ -1,4 +1,5 @@
 #include "py/mpconfig.h"
+#include "py/mpthread.h"
 #include "tos_k.h"
 #include "tos_hal.h"
 #include "mpshellport.h"
