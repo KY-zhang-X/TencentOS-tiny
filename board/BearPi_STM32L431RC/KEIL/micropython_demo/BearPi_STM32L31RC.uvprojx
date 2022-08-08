@@ -1660,6 +1660,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\mpshellport.c</FilePath>
             </File>
+            <File>
+              <FileName>mpthreadport.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\mpthreadport.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
