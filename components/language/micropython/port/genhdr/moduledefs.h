@@ -4,6 +4,10 @@ extern const struct _mp_obj_module_t mp_module___main__;
 #undef MODULE_DEF_MP_QSTR___MAIN__
 #define MODULE_DEF_MP_QSTR___MAIN__ { MP_ROM_QSTR(MP_QSTR___main__), MP_ROM_PTR(&mp_module___main__) },
 
+extern const struct _mp_obj_module_t mp_module_thread;
+#undef MODULE_DEF_MP_QSTR__THREAD
+#define MODULE_DEF_MP_QSTR__THREAD { MP_ROM_QSTR(MP_QSTR__thread), MP_ROM_PTR(&mp_module_thread) },
+
 extern const struct _mp_obj_module_t mp_module_uasyncio;
 #undef MODULE_DEF_MP_QSTR__UASYNCIO
 #define MODULE_DEF_MP_QSTR__UASYNCIO { MP_ROM_QSTR(MP_QSTR__uasyncio), MP_ROM_PTR(&mp_module_uasyncio) },
@@ -120,6 +124,7 @@ extern const struct _mp_obj_module_t mp_module_uzlib;
     MODULE_DEF_MP_QSTR_USTRUCT \
     MODULE_DEF_MP_QSTR_USYS \
     MODULE_DEF_MP_QSTR_UZLIB \
+    MODULE_DEF_MP_QSTR__THREAD \
     MODULE_DEF_MP_QSTR__UASYNCIO \
     MODULE_DEF_MP_QSTR___MAIN__ \
 // MICROPY_REGISTERED_MODULES
