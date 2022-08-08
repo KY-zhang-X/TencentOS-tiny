@@ -58,6 +58,8 @@
 // #define MICROPY_PY_SYS_MODULES          (1)
 // TODO: lgammaf() is not supported
 #define MICROPY_PY_MATH_SPECIAL_FUNCTIONS (0)
+#define MICROPY_PY_UTIME                (1)
+#define MICROPY_PY_UTIME_MP_HAL         (1)
 #define MICROPY_PY_THREAD               (1)
 
 // Extended modules

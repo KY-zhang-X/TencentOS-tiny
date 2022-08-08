@@ -96,6 +96,10 @@ extern const struct _mp_obj_module_t mp_module_sys;
 #undef MODULE_DEF_MP_QSTR_USYS
 #define MODULE_DEF_MP_QSTR_USYS { MP_ROM_QSTR(MP_QSTR_usys), MP_ROM_PTR(&mp_module_sys) },
 
+extern const struct _mp_obj_module_t mp_module_utime;
+#undef MODULE_DEF_MP_QSTR_UTIME
+#define MODULE_DEF_MP_QSTR_UTIME { MP_ROM_QSTR(MP_QSTR_utime), MP_ROM_PTR(&mp_module_utime) },
+
 extern const struct _mp_obj_module_t mp_module_uzlib;
 #undef MODULE_DEF_MP_QSTR_UZLIB
 #define MODULE_DEF_MP_QSTR_UZLIB { MP_ROM_QSTR(MP_QSTR_uzlib), MP_ROM_PTR(&mp_module_uzlib) },
@@ -123,6 +127,7 @@ extern const struct _mp_obj_module_t mp_module_uzlib;
     MODULE_DEF_MP_QSTR_USELECT \
     MODULE_DEF_MP_QSTR_USTRUCT \
     MODULE_DEF_MP_QSTR_USYS \
+    MODULE_DEF_MP_QSTR_UTIME \
     MODULE_DEF_MP_QSTR_UZLIB \
     MODULE_DEF_MP_QSTR__THREAD \
     MODULE_DEF_MP_QSTR__UASYNCIO \

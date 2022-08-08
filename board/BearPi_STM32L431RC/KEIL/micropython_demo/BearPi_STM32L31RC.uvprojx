@@ -1898,6 +1898,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos.c</FilePath>
             </File>
+            <File>
+              <FileName>utime_mphal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\utime_mphal.c</FilePath>
+            </File>
+            <File>
+              <FileName>modutime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\modutime.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
