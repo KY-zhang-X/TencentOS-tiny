@@ -1814,6 +1814,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\uos_dupterm.c</FilePath>
             </File>
+            <File>
+              <FileName>utime_mphal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\utime_mphal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1897,11 +1902,6 @@
               <FileName>vfs_tos.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos.c</FilePath>
-            </File>
-            <File>
-              <FileName>utime_mphal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\utime_mphal.c</FilePath>
             </File>
             <File>
               <FileName>modutime.c</FileName>

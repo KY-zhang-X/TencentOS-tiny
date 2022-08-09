@@ -6,7 +6,7 @@
 #include "py/smallint.h"
 #include "py/obj.h"
 #include "shared/timeutils/timeutils.h"
-#include "utime_mphal.h"
+#include "extmod/utime_mphal.h"
 
 STATIC const mp_rom_map_elem_t time_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_utime) },
