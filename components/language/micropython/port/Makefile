@@ -1,4 +1,6 @@
 BUILD = build
+BOARD = BearPi_STM32L431RC
+BOARD_DIR = board/$(BOARD)
 
 include ../py/mkenv.mk
 
@@ -12,7 +14,8 @@ CROSS_COMPILE ?= arm-none-eabi-
 # Set CFLAGS and libraries.	
 INC = $(addprefix -I,\
 	. \
-	./modules \
+	modules \
+	$(BOARD_DIR) \
 	$(TOP) \
 	$(BUILD) \
 	)
@@ -32,7 +35,10 @@ SHARED_SRC_C = $(addprefix $(TOP)/shared/,\
 PORT_MODULE_SRC_C = \
 	$(wildcard ./modules/*.c) \
 
-SRC_QSTR += $(SHARED_SRC_C) $(PORT_MODULE_SRC_C)
+PORT_BOARD_SRC_C = \
+	$(wildcard $(BOARD_DIR)/*.c) \
+
+SRC_QSTR += $(SHARED_SRC_C) $(PORT_MODULE_SRC_C) $(PORT_BOARD_SRC_C)
 
 # Target genhdr directory
 TARGET_GENHDR_DIR = ./genhdr/

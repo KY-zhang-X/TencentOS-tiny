@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "mpconfigboard.h"
+
 #ifndef MICROPY_CONFIG_ROM_LEVEL
 // #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)
 // #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_CORE_FEATURES)
@@ -72,6 +74,7 @@
 #define MICROPY_PY_OS_DUPTERM           (1)
 #define MICROPY_PY_UOS_DUPTERM_NOTIFY   (0)
 #define MICROPY_PY_UOS_UNAME            (1)
+#define MICROPY_PY_MACHINE              (1)
 
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
@@ -124,8 +127,6 @@ typedef long mp_off_t;
 
 #include <alloca.h>
 
-#define MICROPY_HW_BOARD_NAME                       "BearPi"
-#define MICROPY_HW_MCU_NAME                         "STM32F431RC"
 #define MICROPY_PY_SYS_PLATFORM                     "TencentOS-tiny"
 
 #define MP_STATE_PORT MP_STATE_VM

@@ -72,6 +72,10 @@ extern const struct _mp_obj_module_t mp_module_ujson;
 #undef MODULE_DEF_MP_QSTR_UJSON
 #define MODULE_DEF_MP_QSTR_UJSON { MP_ROM_QSTR(MP_QSTR_ujson), MP_ROM_PTR(&mp_module_ujson) },
 
+extern const struct _mp_obj_module_t mp_module_machine;
+#undef MODULE_DEF_MP_QSTR_UMACHINE
+#define MODULE_DEF_MP_QSTR_UMACHINE { MP_ROM_QSTR(MP_QSTR_umachine), MP_ROM_PTR(&mp_module_machine) },
+
 extern const struct _mp_obj_module_t mp_module_uos;
 #undef MODULE_DEF_MP_QSTR_UOS
 #define MODULE_DEF_MP_QSTR_UOS { MP_ROM_QSTR(MP_QSTR_uos), MP_ROM_PTR(&mp_module_uos) },
@@ -121,6 +125,7 @@ extern const struct _mp_obj_module_t mp_module_uzlib;
     MODULE_DEF_MP_QSTR_UHEAPQ \
     MODULE_DEF_MP_QSTR_UIO \
     MODULE_DEF_MP_QSTR_UJSON \
+    MODULE_DEF_MP_QSTR_UMACHINE \
     MODULE_DEF_MP_QSTR_UOS \
     MODULE_DEF_MP_QSTR_URANDOM \
     MODULE_DEF_MP_QSTR_URE \
