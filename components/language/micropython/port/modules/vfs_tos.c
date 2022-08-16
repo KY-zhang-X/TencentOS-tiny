@@ -78,7 +78,7 @@ STATIC mp_obj_t vfs_tos_make_new(const mp_obj_type_t *type, size_t n_args, size_
     return MP_OBJ_FROM_PTR(vfs);
 }
 
-STATIC vfs_tos_mount(mp_obj_t self_in, mp_obj_t readonly, mp_obj_t mkfs) {
+STATIC mp_obj_t vfs_tos_mount(mp_obj_t self_in, mp_obj_t readonly, mp_obj_t mkfs) {
     mp_obj_vfs_tos_t *self = MP_OBJ_TO_PTR(self_in);
     if (mp_obj_is_true(readonly)) {
         self->readonly = true;
