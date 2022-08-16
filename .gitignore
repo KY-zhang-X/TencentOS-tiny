@@ -33,5 +33,4 @@ board/*/KEIL/*/EventRecorderStub.scvd
 board/*/KEIL/*/*/*.htm
 board/*/KEIL/*/*/*.build_log.htm
 board/**/settings/*
-
 .vscode
