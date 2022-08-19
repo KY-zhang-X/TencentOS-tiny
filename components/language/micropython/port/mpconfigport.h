@@ -71,7 +71,7 @@
 // #define MICROPY_PY_UHASHLIB_SHA256      (1)
 // #define MICROPY_PY_UCRYPTOLIB           (0)
 // #define MICROPY_PY_UJSON                (0)
-#define MICROPY_PY_OS_DUPTERM           (1)
+#define MICROPY_PY_OS_DUPTERM           (0)
 #define MICROPY_PY_UOS_DUPTERM_NOTIFY   (0)
 #define MICROPY_PY_UOS_UNAME            (1)
 #define MICROPY_PY_MACHINE              (1)
