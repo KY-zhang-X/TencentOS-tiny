@@ -93,7 +93,7 @@ void MX_USART2_UART_Init(void)
   {
     Error_Handler();
   }
-  HAL_UART_Receive_IT(&huart2, &shell_data, 1);
+  // HAL_UART_Receive_IT(&huart2, &shell_data, 1);
 }
 /* USART3 init function */
 

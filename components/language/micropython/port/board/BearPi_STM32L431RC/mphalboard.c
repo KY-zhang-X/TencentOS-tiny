@@ -4,7 +4,9 @@
 #include "py/obj.h"
 #include "py/runtime.h"
 
-extern const mp_obj_type_t machine_pin_type;
+#include "modmachine.h"
+
+// extern const mp_obj_type_t machine_pin_type;
 
 #define PIN(p_port, p_pin) \
     const machine_pin_obj_t machine_pin_##p_port##p_pin##_obj = { \
@@ -32,58 +34,62 @@ PIN(C, 12); PIN(C, 13); PIN(C, 14); PIN(C, 15);
 PIN(D, 2);
 
 STATIC const mp_rom_map_elem_t machine_pins_locals_dict_table[] = {
-    { MP_ROM_QSTR(MP_QSTR_A0),  MP_ROM_PTR(&machine_pin_A0_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A1),  MP_ROM_PTR(&machine_pin_A1_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A2),  MP_ROM_PTR(&machine_pin_A2_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A3),  MP_ROM_PTR(&machine_pin_A3_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A4),  MP_ROM_PTR(&machine_pin_A4_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A5),  MP_ROM_PTR(&machine_pin_A5_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A6),  MP_ROM_PTR(&machine_pin_A6_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A7),  MP_ROM_PTR(&machine_pin_A7_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A8),  MP_ROM_PTR(&machine_pin_A8_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A9),  MP_ROM_PTR(&machine_pin_A9_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A10), MP_ROM_PTR(&machine_pin_A10_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A11), MP_ROM_PTR(&machine_pin_A11_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A12), MP_ROM_PTR(&machine_pin_A12_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A13), MP_ROM_PTR(&machine_pin_A13_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A14), MP_ROM_PTR(&machine_pin_A14_obj) },
-    { MP_ROM_QSTR(MP_QSTR_A15), MP_ROM_PTR(&machine_pin_A15_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A0),  MP_ROM_PTR(&machine_pin_A0_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A1),  MP_ROM_PTR(&machine_pin_A1_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A2),  MP_ROM_PTR(&machine_pin_A2_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A3),  MP_ROM_PTR(&machine_pin_A3_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A4),  MP_ROM_PTR(&machine_pin_A4_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A5),  MP_ROM_PTR(&machine_pin_A5_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A6),  MP_ROM_PTR(&machine_pin_A6_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A7),  MP_ROM_PTR(&machine_pin_A7_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A8),  MP_ROM_PTR(&machine_pin_A8_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A9),  MP_ROM_PTR(&machine_pin_A9_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A10), MP_ROM_PTR(&machine_pin_A10_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A11), MP_ROM_PTR(&machine_pin_A11_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A12), MP_ROM_PTR(&machine_pin_A12_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A13), MP_ROM_PTR(&machine_pin_A13_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A14), MP_ROM_PTR(&machine_pin_A14_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_A15), MP_ROM_PTR(&machine_pin_A15_obj) },
 
-    { MP_ROM_QSTR(MP_QSTR_B0),  MP_ROM_PTR(&machine_pin_B0_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B1),  MP_ROM_PTR(&machine_pin_B1_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B0),  MP_ROM_PTR(&machine_pin_B0_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B1),  MP_ROM_PTR(&machine_pin_B1_obj) },
     { MP_ROM_QSTR(MP_QSTR_B2),  MP_ROM_PTR(&machine_pin_B2_obj) },
     { MP_ROM_QSTR(MP_QSTR_B3),  MP_ROM_PTR(&machine_pin_B3_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B4),  MP_ROM_PTR(&machine_pin_B4_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B5),  MP_ROM_PTR(&machine_pin_B5_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B6),  MP_ROM_PTR(&machine_pin_B6_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B7),  MP_ROM_PTR(&machine_pin_B7_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B8),  MP_ROM_PTR(&machine_pin_B8_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B9),  MP_ROM_PTR(&machine_pin_B9_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B10), MP_ROM_PTR(&machine_pin_B10_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B11), MP_ROM_PTR(&machine_pin_B11_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B12), MP_ROM_PTR(&machine_pin_B12_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B13), MP_ROM_PTR(&machine_pin_B13_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B14), MP_ROM_PTR(&machine_pin_B14_obj) },
-    { MP_ROM_QSTR(MP_QSTR_B15), MP_ROM_PTR(&machine_pin_B15_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B4),  MP_ROM_PTR(&machine_pin_B4_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B5),  MP_ROM_PTR(&machine_pin_B5_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B6),  MP_ROM_PTR(&machine_pin_B6_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B7),  MP_ROM_PTR(&machine_pin_B7_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B8),  MP_ROM_PTR(&machine_pin_B8_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B9),  MP_ROM_PTR(&machine_pin_B9_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B10), MP_ROM_PTR(&machine_pin_B10_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B11), MP_ROM_PTR(&machine_pin_B11_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B12), MP_ROM_PTR(&machine_pin_B12_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B13), MP_ROM_PTR(&machine_pin_B13_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B14), MP_ROM_PTR(&machine_pin_B14_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_B15), MP_ROM_PTR(&machine_pin_B15_obj) },
 
-    { MP_ROM_QSTR(MP_QSTR_C0),  MP_ROM_PTR(&machine_pin_C0_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C1),  MP_ROM_PTR(&machine_pin_C1_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C2),  MP_ROM_PTR(&machine_pin_C2_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C3),  MP_ROM_PTR(&machine_pin_C3_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C4),  MP_ROM_PTR(&machine_pin_C4_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C5),  MP_ROM_PTR(&machine_pin_C5_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C6),  MP_ROM_PTR(&machine_pin_C6_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C7),  MP_ROM_PTR(&machine_pin_C7_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C8),  MP_ROM_PTR(&machine_pin_C8_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C9),  MP_ROM_PTR(&machine_pin_C9_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C10), MP_ROM_PTR(&machine_pin_C10_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C11), MP_ROM_PTR(&machine_pin_C11_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C12), MP_ROM_PTR(&machine_pin_C12_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C0),  MP_ROM_PTR(&machine_pin_C0_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C1),  MP_ROM_PTR(&machine_pin_C1_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C2),  MP_ROM_PTR(&machine_pin_C2_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C3),  MP_ROM_PTR(&machine_pin_C3_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C4),  MP_ROM_PTR(&machine_pin_C4_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C5),  MP_ROM_PTR(&machine_pin_C5_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C6),  MP_ROM_PTR(&machine_pin_C6_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C7),  MP_ROM_PTR(&machine_pin_C7_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C8),  MP_ROM_PTR(&machine_pin_C8_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C9),  MP_ROM_PTR(&machine_pin_C9_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C10), MP_ROM_PTR(&machine_pin_C10_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C11), MP_ROM_PTR(&machine_pin_C11_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C12), MP_ROM_PTR(&machine_pin_C12_obj) },
     { MP_ROM_QSTR(MP_QSTR_C13), MP_ROM_PTR(&machine_pin_C13_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C14), MP_ROM_PTR(&machine_pin_C14_obj) },
-    { MP_ROM_QSTR(MP_QSTR_C15), MP_ROM_PTR(&machine_pin_C15_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C14), MP_ROM_PTR(&machine_pin_C14_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_C15), MP_ROM_PTR(&machine_pin_C15_obj) },
 
-    { MP_ROM_QSTR(MP_QSTR_D2),  MP_ROM_PTR(&machine_pin_D2_obj) },
+    // { MP_ROM_QSTR(MP_QSTR_D2),  MP_ROM_PTR(&machine_pin_D2_obj) },
+
+    { MP_ROM_QSTR(MP_QSTR_LED), MP_ROM_PTR(&machine_pin_C13_obj) },
+    { MP_ROM_QSTR(MP_QSTR_KEY1), MP_ROM_PTR(&machine_pin_B2_obj) },
+    { MP_ROM_QSTR(MP_QSTR_KEY2), MP_ROM_PTR(&machine_pin_B3_obj) },
 
 };
 STATIC MP_DEFINE_CONST_DICT(machine_pins_locals_dict, machine_pins_locals_dict_table);
@@ -141,7 +147,7 @@ void mp_hal_pin_print(const mp_print_t *print, mp_hal_pin_obj_t pin) {
     mp_printf(print, "Pin(%q)", pin->name);
 }
 
-/* External Interrupt */
+/********************** External Interrupt *************************/
 #define EXTI_NUM_VECTORS        (16)
 
 STATIC const uint8_t nvic_irq_channel[EXTI_NUM_VECTORS] = {
@@ -204,4 +210,55 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     uint32_t line = mask2no(GPIO_Pin);
     mp_obj_t handler = machine_pin_irq_handler[line];
     mp_sched_schedule(handler, machine_pin_irq_handler_arg[line]);
+}
+
+/************************** UART *******************************/
+
+#define UART_NUM 4
+
+#define UART(u_port) \
+    machine_uart_obj_t machine_uart_##u_port##_obj = { \
+        {&machine_uart_type}, \
+        .port = HAL_UART_PORT_##u_port, \
+        .rx_fifo_buf = NULL, \
+        .init = 0, \
+    }
+
+UART(0); UART(1); UART(2); UART(3);
+
+static machine_uart_obj_t *machine_uart_obj_all[UART_NUM] = {
+    &machine_uart_0_obj,
+    &machine_uart_1_obj,
+    &machine_uart_2_obj,
+    &machine_uart_3_obj,
+};
+
+machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj) {
+    machine_uart_obj_t *uart = NULL;
+    if (mp_obj_is_int(user_obj)) {
+        mp_uint_t uart_id = mp_obj_get_int(user_obj);
+        if (uart_id < UART_NUM)
+            uart = machine_uart_obj_all[uart_id];
+    }
+    return uart;
+}
+
+void machine_uart_rx_start(machine_uart_obj_t *self) {
+    if (self->rx_fifo_buf) {
+        HAL_UART_Receive_IT((UART_HandleTypeDef*)self->uart.private_uart, &self->rx_char_buf, 1);
+    }
+}
+
+void uart_irq_handler(uint32_t uart_id) {
+    machine_uart_obj_t *self = machine_uart_obj_all[uart_id];
+    if (self == NULL || !self->init) {
+        return;
+    }
+    
+    machine_uart_rx_start(self);
+
+    if (self->rx_fifo_buf) {
+        tos_chr_fifo_push(&self->rx_fifo, self->rx_char_buf);
+        tos_sem_post(&self->rx_sem);
+    }
 }

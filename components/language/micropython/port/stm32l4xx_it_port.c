@@ -295,10 +295,11 @@ void LPUART1_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    extern uint8_t shell_data;
+    extern void uart_irq_handler(uint32_t uart_id);
     if (huart->Instance == USART2) {
-        HAL_UART_Receive_IT(&huart2, &shell_data, 1);
-        mp_shell_input_byte(shell_data);
+        uart_irq_handler(2);
+        // HAL_UART_Receive_IT(&huart2, &shell_data, 1);
+        // mp_shell_input_byte(shell_data);
     }
 }
 /* USER CODE END 1 */

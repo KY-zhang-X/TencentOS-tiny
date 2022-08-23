@@ -1,13 +1,20 @@
 #include "py/mpconfig.h"
 #include "py/mpthread.h"
+#include "py/mphal.h"
 #include "tos_k.h"
 #include "tos_hal.h"
 #include "mpshellport.h"
 
 int mp_hal_stdin_rx_chr(void) 
 {
+    extern int machine_uart_rx_chr(machine_uart_obj_t *self);
     while (1) {
-        int c = mp_shell_getchar();
+        // int c = mp_shell_getchar();
+        int c = -1;
+        machine_uart_obj_t *uart = MP_STATE_PORT(stdio_uart);
+        if (uart != NULL) {
+            c = machine_uart_rx_chr(uart);
+        }
         if (c != -1) {
             return c;
         }
@@ -17,7 +24,10 @@ int mp_hal_stdin_rx_chr(void)
 
 void mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) 
 {
-    mp_shell_putsn(str, len);
+    extern int machine_uart_tx_strn(machine_uart_obj_t *self, const char *str, mp_uint_t len);
+    machine_uart_obj_t *uart = MP_STATE_PORT(stdio_uart);
+    machine_uart_tx_strn(uart, str, len);
+    // mp_shell_putsn(str, len);
 }
 
 void mp_hal_delay_ms(mp_uint_t ms)

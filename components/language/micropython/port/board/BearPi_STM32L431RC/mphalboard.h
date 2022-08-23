@@ -3,6 +3,8 @@
 
 #if !(MP_GEN_HDR)
 #include "main.h"
+#include "tos_k.h"
+#include "tos_hal_uart.h"
 #endif
 #include "py/obj.h"
 
@@ -46,5 +48,19 @@ typedef struct  _machine_pin_obj_t {
 #define IRQ_PRI_EXTINT          2
 #define IRQ_PRI_PENDSV          3
 #define IRQ_PRI_RTC_WKUP        3
+
+typedef struct _machine_uart_obj_t {
+    mp_obj_base_t base;
+    hal_uart_port_t port;
+    hal_uart_t uart;
+    uint8_t rx_char_buf;
+    k_sem_t rx_sem;
+    k_chr_fifo_t rx_fifo;
+    uint8_t *rx_fifo_buf;
+    uint16_t rx_fifo_buf_len;
+    uint16_t timeout;           // timeout waiting for first char
+    uint16_t timeout_char;      // timeout waiting between chars
+    uint8_t init : 1;
+} machine_uart_obj_t;
 
 #endif /* _MPHALBOARD_H_ */

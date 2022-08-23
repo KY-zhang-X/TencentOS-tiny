@@ -8,6 +8,8 @@
 #include "shared/runtime/gchelper.h"
 #include "shared/runtime/pyexec.h"
 
+#include "modmachine.h"
+
 #if MICROPY_VFS_TOS
 #include "extmod/vfs.h"
 #include "vfs_tos.h"
@@ -18,8 +20,9 @@
 #define MP_HEAP_SIZE        (8 * 1024)
 
 // MicroPython GC heap
-__STATIC__ char *heap = K_NULL;
-__STATIC__ void *stack_top = K_NULL;
+STATIC char *heap = NULL;
+STATIC void *stack_top = NULL;
+STATIC mp_obj_t uart_repl_obj;
 
 int mp_main(void) 
 {
@@ -30,6 +33,20 @@ int mp_main(void)
     mp_thread_init();
     #endif
     stack_top = (void *)&stack_dummy;
+
+    #ifdef MICROPY_HW_UART_REPL
+    {
+        mp_obj_t args[7] = {
+            MP_OBJ_NEW_SMALL_INT(MICROPY_HW_UART_REPL),
+            MP_OBJ_NEW_QSTR(MP_QSTR_rxbuf), MP_OBJ_NEW_SMALL_INT(512),
+            MP_OBJ_NEW_QSTR(MP_QSTR_timeout), MP_OBJ_NEW_SMALL_INT(0),
+            MP_OBJ_NEW_QSTR(MP_QSTR_timeout_char), MP_OBJ_NEW_SMALL_INT(2),
+        };
+        uart_repl_obj = machine_uart_type.make_new(&machine_uart_type, 1, 3, args);
+    }
+    #endif /* MICROPY_HW_UART_REPL */
+
+soft_reset:
     mp_stack_set_top(stack_top);
     mp_stack_set_limit(tos_task_curr_task_get()->stk_size - MP_THREAD_STACK_LIMIT_MARGIN);
 
@@ -42,7 +59,11 @@ int mp_main(void)
     gc_init(heap, heap + MP_HEAP_SIZE);
     
     mp_init();
-    
+
+    #ifdef MICROPY_HW_UART_REPL
+    MP_STATE_PORT(stdio_uart) = MP_OBJ_TO_PTR(uart_repl_obj);
+    #endif /* MICROPY_HW_UART_REPL */
+
     #if MICROPY_VFS_TOS
     {
         mp_obj_t root = mp_obj_new_str("/fs", 3);
@@ -67,6 +88,9 @@ int mp_main(void)
             }
         }
     }
+
+soft_reset_exit:
+
     mp_printf(&mp_plat_print, "exit repl\n");
 
     #if MICROPY_PY_THREAD
@@ -78,7 +102,7 @@ int mp_main(void)
 
     mp_deinit();
 
-    return 0;
+    goto soft_reset;
 }
 
 // Handle uncaught exceptions (should never be reached in a correct C implemetation).

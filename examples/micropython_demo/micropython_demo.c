@@ -1,5 +1,4 @@
 #include "tos_k.h"
-#include "mpshellport.h"
 #include "mpmain.h"
 #include "py/builtin.h"
 
@@ -30,8 +29,6 @@ void mp_entry(void *arg) {
     w25qxx_memory_mapped();
     #endif /* MP_USING_QSPI_FLASH */
   
-    mp_shell_init(MP_SHELL_BUF_SIZE, HAL_UART_PORT_2);
-
     #if MP_USING_VFS
     extern vfs_blkdev_ops_t sd_dev;
     extern vfs_fs_ops_t fatfs_ops;

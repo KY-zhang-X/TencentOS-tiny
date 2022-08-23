@@ -7,8 +7,8 @@
 
 #if MICROPY_PY_THREAD
 
-#define MP_THREAD_MIN_STACK_SIZE                        (4 * 1024)
-#define MP_THREAD_DEFAULT_STACK_SIZE                    (MP_THREAD_MIN_STACK_SIZE + 1024)
+#define MP_THREAD_MIN_STACK_SIZE                        (2 * 1024)
+#define MP_THREAD_DEFAULT_STACK_SIZE                    (4 * 1024)
 
 // this structure form a linked list, one node per active thread
 typedef struct _mp_thread_t {

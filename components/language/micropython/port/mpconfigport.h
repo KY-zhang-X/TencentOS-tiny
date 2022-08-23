@@ -75,6 +75,8 @@
 #define MICROPY_PY_UOS_DUPTERM_NOTIFY   (0)
 #define MICROPY_PY_UOS_UNAME            (1)
 #define MICROPY_PY_MACHINE              (1)
+#define MICROPY_PY_MACHINE_PIN_MAKE_NEW mp_pin_make_new
+
 
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
@@ -132,7 +134,8 @@ typedef long mp_off_t;
 #define MP_STATE_PORT MP_STATE_VM
 
 #define MICROPY_PORT_ROOT_POINTERS \
-    const char *readline_hist[8];
+    const char *readline_hist[8]; \
+    struct _machine_uart_obj_t *stdio_uart; \
 
 
 

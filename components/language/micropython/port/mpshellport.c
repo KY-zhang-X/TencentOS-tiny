@@ -15,8 +15,10 @@ int mp_shell_getchar(void)
     HAL_UART_Receive_IT(&huart2, &shell_data, 1);
     /*===========================================*/
 
-    if (tos_sem_pend(&MP_SHELL_CTL->shell_rx_sem, TOS_TIME_FOREVER) != K_ERR_NONE) {
-        return -1;
+    if (tos_chr_fifo_is_empty(&MP_SHELL_CTL->shell_rx_fifo)) {
+        if (tos_sem_pend(&MP_SHELL_CTL->shell_rx_sem, TOS_TIME_FOREVER) != K_ERR_NONE) {
+            return -1;
+        }
     }
 
     err = tos_chr_fifo_pop(&MP_SHELL_CTL->shell_rx_fifo, &chr);
