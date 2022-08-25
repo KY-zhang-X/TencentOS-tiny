@@ -2012,6 +2012,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_uart.c</FilePath>
             </File>
+            <File>
+              <FileName>machine_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

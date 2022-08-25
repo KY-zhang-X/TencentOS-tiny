@@ -101,6 +101,9 @@ typedef long mp_off_t;
 #define UINT_FMT "%u"
 #define INT_FMT "%d"
 
+#define MICROPY_BEGIN_ATOMIC_SECTION()      tos_cpu_cpsr_save()
+#define MICROPY_END_ATOMIC_SECTION(state)   tos_cpu_cpsr_restore(state)
+
 #if MICROPY_PY_THREAD
 #define MICROPY_EVENT_POLL_HOOK \
     do { \
@@ -136,6 +139,7 @@ typedef long mp_off_t;
 #define MICROPY_PORT_ROOT_POINTERS \
     const char *readline_hist[8]; \
     struct _machine_uart_obj_t *stdio_uart; \
+    struct _machine_timer_obj_t *machine_timer_obj_head; \
 
 
 

@@ -93,6 +93,10 @@ soft_reset_exit:
 
     mp_printf(&mp_plat_print, "exit repl\n");
 
+    #if MICROPY_PY_MACHINE
+    machine_timer_deinit_all();
+    #endif
+
     #if MICROPY_PY_THREAD
     mp_thread_deinit();
     #endif
