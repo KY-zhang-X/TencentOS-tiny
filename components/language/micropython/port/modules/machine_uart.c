@@ -16,6 +16,8 @@ int machine_uart_rx_chr(machine_uart_obj_t *self) {
     if (!self->init)
         return -1;
     
+    machine_uart_rx_start(self);
+
     if (tos_chr_fifo_is_empty(&self->rx_fifo)) {
         if (tos_sem_pend(&self->rx_sem, self->timeout) != K_ERR_NONE) {
             return -1;
