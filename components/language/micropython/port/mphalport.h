@@ -20,7 +20,6 @@ static inline void mp_hal_set_interrupt_char(char c) {}
     ((PULL) == MP_HAL_PIN_PULL_DOWN))
 #endif
 
-#define mp_hal_pin_obj_t const machine_pin_obj_t *
 int mp_hal_pin_read(mp_hal_pin_obj_t pin);
 void mp_hal_pin_write(mp_hal_pin_obj_t pin, int v);
 void mp_hal_pin_config(mp_hal_pin_obj_t pin, uint32_t mode, uint32_t pull, uint32_t alt);
