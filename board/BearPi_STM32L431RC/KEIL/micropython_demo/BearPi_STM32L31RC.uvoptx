@@ -3194,6 +3194,38 @@
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
+    <File>
+      <GroupNumber>16</GroupNumber>
+      <FileNumber>236</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\..\components\language\micropython\extmod\machine_spi.c</PathWithFileName>
+      <FilenameWithoutPath>machine_spi.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+  </Group>
+
+  <Group>
+    <GroupName>micropython/drivers</GroupName>
+    <tvExp>0</tvExp>
+    <tvExpOptDlg>0</tvExpOptDlg>
+    <cbSel>0</cbSel>
+    <RteFlg>0</RteFlg>
+    <File>
+      <GroupNumber>17</GroupNumber>
+      <FileNumber>237</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\..\components\language\micropython\drivers\bus\softspi.c</PathWithFileName>
+      <FilenameWithoutPath>softspi.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
   </Group>
 
   <Group>
@@ -3203,8 +3235,8 @@
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>236</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>238</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3215,8 +3247,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>237</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>239</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3227,8 +3259,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>238</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>240</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3239,8 +3271,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>239</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>241</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3251,8 +3283,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>240</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>242</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3263,8 +3295,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>241</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>243</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -3275,8 +3307,8 @@
       <bShared>0</bShared>
     </File>
     <File>
-      <GroupNumber>17</GroupNumber>
-      <FileNumber>242</FileNumber>
+      <GroupNumber>18</GroupNumber>
+      <FileNumber>244</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

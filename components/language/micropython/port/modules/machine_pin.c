@@ -10,7 +10,7 @@
 #endif
 
 STATIC const machine_pin_obj_t *machine_pin_find(mp_obj_t user_obj) {
-    const machine_pin_obj_t *pin_obj = mp_hal_pin_find(user_obj);
+    const machine_pin_obj_t *pin_obj = mp_hal_get_pin_obj(user_obj);
     if (pin_obj) {
         return pin_obj;
     }

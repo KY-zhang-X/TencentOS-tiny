@@ -9,6 +9,9 @@
 #include "tos_hal_uart.h"
 #endif
 
+extern machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj);
+extern void machine_uart_rx_start(machine_uart_obj_t *self);
+
 int machine_uart_rx_chr(machine_uart_obj_t *self) {
     k_err_t err;
     uint8_t chr;
@@ -34,9 +37,6 @@ int machine_uart_tx_strn(machine_uart_obj_t *self, const char *str, mp_uint_t le
     }
     return 0;
 }
-
-extern machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj);
-extern void machine_uart_rx_start(machine_uart_obj_t *self);
 
 STATIC void machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     machine_uart_obj_t *self = MP_OBJ_TO_PTR(self_in);

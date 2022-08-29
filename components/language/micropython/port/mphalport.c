@@ -35,20 +35,9 @@ void mp_hal_delay_ms(mp_uint_t ms)
     tos_task_delay(tos_millisec2tick(ms));
 }
 
-void mp_hal_delay_us(mp_uint_t us) 
-{
-    mp_uint_t ms = us / 1000 + ((us % 1000) > 0 ? 1 : 0);
-    tos_task_delay(tos_millisec2tick(ms));
-}
-
 mp_uint_t mp_hal_ticks_ms(void)
 {
     return tos_tick2millisec(tos_systick_get());
-}
-
-mp_uint_t mp_hal_ticks_us(void)
-{
-    return tos_tick2millisec(tos_systick_get()) * 1000;
 }
 
 mp_uint_t mp_hal_ticks_cpu(void)
