@@ -1913,6 +1913,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\machine_spi.c</FilePath>
             </File>
+            <File>
+              <FileName>machine_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_i2c.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

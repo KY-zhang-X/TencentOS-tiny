@@ -32,7 +32,10 @@ void mp_hal_pin_print(const mp_print_t *print, mp_hal_pin_obj_t pin);
 
 #define mp_hal_pin_high(pin)        mp_hal_pin_write((pin), 1)
 #define mp_hal_pin_low(pin)         mp_hal_pin_write((pin), 0)
+#define mp_hal_pin_od_high(pin)     mp_hal_pin_high(pin)
+#define mp_hal_pin_od_low(pin)      mp_hal_pin_low(pin)
 #define mp_hal_pin_input(pin)       mp_hal_pin_config((pin), MP_HAL_PIN_MODE_INPUT, MP_HAL_PIN_PULL_NONE, 0)
 #define mp_hal_pin_output(pin)      mp_hal_pin_config((pin), MP_HAL_PIN_MODE_OUTPUT, MP_HAL_PIN_PULL_NONE, 0)
+#define mp_hal_pin_open_drain(pin)  mp_hal_pin_config((pin), MP_HAL_PIN_MODE_OPEN_DRAIN, MP_HAL_PIN_PULL_NONE, 0)
 
 #define mp_hal_delay_us_fast(us)    mp_hal_delay_us(us)
