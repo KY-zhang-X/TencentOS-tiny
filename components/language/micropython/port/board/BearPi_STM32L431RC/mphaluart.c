@@ -7,6 +7,7 @@
 
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
+#include "tos_at.h"
 #endif
 
 /************************** UART *******************************/
@@ -18,6 +19,7 @@
         {&machine_uart_type}, \
         .port = HAL_UART_PORT_##u_port, \
         .rx_fifo_buf = NULL, \
+        .at_agent = NULL, \
         .init = 0, \
     }
 
@@ -41,7 +43,7 @@ machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj) {
 }
 
 void machine_uart_rx_start(machine_uart_obj_t *self) {
-    if (self->rx_fifo_buf) {
+    if (self->rx_fifo_buf || self->at_agent) {
         HAL_UART_Receive_IT((UART_HandleTypeDef*)self->uart.private_uart, &self->rx_char_buf, 1);
     }
 }
@@ -53,6 +55,12 @@ static void uart_irq_handler(uint32_t uart_id) {
     }
     
     machine_uart_rx_start(self);
+
+    // if UART is used as at agent
+    if (self->at_agent) {
+        tos_at_uart_input_byte(self->at_agent, self->rx_char_buf);
+        return;
+    }
 
     if (self->rx_fifo_buf) {
         tos_chr_fifo_push(&self->rx_fifo, self->rx_char_buf);
@@ -71,4 +79,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     } else if (huart->Instance == USART3) {
         uart_irq_handler(3);
     }
+}
+
+void mp_hal_uart_rx_start(uint32_t uart_id) {
+    machine_uart_obj_t *self = machine_uart_obj_all[uart_id];
+    if (self == NULL || !self->init) {
+        return;
+    }
+    machine_uart_rx_start(self);
 }

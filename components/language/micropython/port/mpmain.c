@@ -76,6 +76,10 @@ soft_reset:
     }
     #endif
 
+    #if MICROPY_PY_NETWORK
+    mod_network_init();
+    #endif
+
     // Start a normal REPL; will exit when ctrl-D is entered on a blank line.
     for (;;) {
         if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {

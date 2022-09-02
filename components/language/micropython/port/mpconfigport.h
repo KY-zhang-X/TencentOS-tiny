@@ -80,7 +80,9 @@
 #define MICROPY_PY_MACHINE_SOFTSPI      (1)
 #define MICROPY_PY_MACHINE_I2C          (1)
 #define MICROPY_PY_MACHINE_SOFTI2C      (1)
-
+#define MICROPY_PY_NETWORK              (1)
+#define MICROPY_PY_NETWORK_ESP8266      (1)
+#define MICROPY_PY_USOCKET              (1)
 
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
@@ -93,6 +95,22 @@
 #define mp_type_textio mp_type_vfs_posix_textio
 #endif
 
+
+#if MICROPY_PY_NETWORK_ESP8266
+extern const struct _mod_network_nic_type_t mod_network_nic_type_esp8266;
+#define MICROPY_HW_NIC_ESP8266 \
+    { MP_ROM_QSTR(MP_QSTR_ESP8266), MP_ROM_PTR(&mod_network_nic_type_esp8266) },
+#else
+#define MICROPY_HW_NIC_ESP8266
+#endif
+
+#ifndef MICROPY_BOARD_NETWORK_INTERFACES
+#define MICROPY_BOARD_NETWORK_INTERFACES
+#endif
+
+#define MICROPY_PORT_NETWORK_INTERFACES \
+    MICROPY_HW_NIC_ESP8266 \
+    MICROPY_BOARD_NETWORK_INTERFACES \
 
 
 #define __BYTE_ORDER__  __ORDER_LITTLE_ENDIAN__
@@ -144,6 +162,7 @@ typedef long mp_off_t;
     const char *readline_hist[8]; \
     struct _machine_uart_obj_t *stdio_uart; \
     struct _machine_timer_obj_t *machine_timer_obj_head; \
+    mp_obj_list_t mod_network_nic_list; \
 
 
 

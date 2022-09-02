@@ -32,13 +32,18 @@ SHARED_SRC_C = $(addprefix $(TOP)/shared/,\
 	runtime/stdout_helpers.c \
 	)
 
+EXTMOD_SRC_C += $(addprefix $(TOP)/extmod/,\
+	modnetwork.c \
+	modusocket.c \
+	)
+
 PORT_MODULE_SRC_C = \
 	$(wildcard ./modules/*.c) \
 
 PORT_BOARD_SRC_C = \
 	$(wildcard $(BOARD_DIR)/*.c) \
 
-SRC_QSTR += $(SHARED_SRC_C) $(PORT_MODULE_SRC_C) $(PORT_BOARD_SRC_C)
+SRC_QSTR += $(SHARED_SRC_C) $(EXTMOD_SRC_C) $(PORT_MODULE_SRC_C) $(PORT_BOARD_SRC_C)
 
 # Target genhdr directory
 TARGET_GENHDR_DIR = ./genhdr/

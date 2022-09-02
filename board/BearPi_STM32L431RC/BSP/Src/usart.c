@@ -24,6 +24,7 @@
 /* USER CODE BEGIN 0 */
 uint8_t data;
 uint8_t shell_data;
+extern void mp_hal_uart_rx_start(uint32_t uart_id);
 /* USER CODE END 0 */
 
 UART_HandleTypeDef hlpuart1;
@@ -49,7 +50,8 @@ void MX_LPUART1_UART_Init(void)
   {
     Error_Handler();
   }
-	HAL_UART_Receive_IT(&hlpuart1, &data, 1);
+	// HAL_UART_Receive_IT(&hlpuart1, &data, 1);
+  mp_hal_uart_rx_start(0);
 #if AT_INPUT_TYPE_FRAME_EN 
   __HAL_UART_ENABLE_IT(&hlpuart1, UART_IT_IDLE);
 #endif
@@ -73,6 +75,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
+  mp_hal_uart_rx_start(1);
 }
 /* USART2 init function */
 
@@ -94,6 +97,7 @@ void MX_USART2_UART_Init(void)
     Error_Handler();
   }
   // HAL_UART_Receive_IT(&huart2, &shell_data, 1);
+  mp_hal_uart_rx_start(2);
 }
 /* USART3 init function */
 
@@ -114,7 +118,7 @@ void MX_USART3_UART_Init(void)
   {
     Error_Handler();
   }
-
+  mp_hal_uart_rx_start(3);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)

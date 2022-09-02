@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,NDEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\genhdr;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\genhdr;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -757,6 +757,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\kernel\core\tos_ring_queue.c</FilePath>
             </File>
+            <File>
+              <FileName>tos_stopwatch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\kernel\core\tos_stopwatch.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -805,6 +810,46 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>net</GroupName>
+          <Files>
+            <File>
+              <FileName>tos_at.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\net\at\src\tos_at.c</FilePath>
+            </File>
+            <File>
+              <FileName>sal_module_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\net\sal_module_wrapper\sal_module_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>tos_at_socket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket.c</FilePath>
+            </File>
+            <File>
+              <FileName>tos_at_socket_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>tos_at_socket_prv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket_prv.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>devices</GroupName>
+          <Files>
+            <File>
+              <FileName>esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\devices\esp8266\esp8266.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>vfs</GroupName>
           <Files>
             <File>
@@ -836,6 +881,75 @@
         </Group>
         <Group>
           <GroupName>fatfs</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>1</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
           <Files>
             <File>
               <FileName>tos_diskio.c</FileName>
@@ -1635,6 +1749,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\interrupt_char.c</FilePath>
             </File>
+            <File>
+              <FileName>netutils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\netutils\netutils.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1928,6 +2047,16 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\machine_i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>modnetwork.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modnetwork.c</FilePath>
+            </File>
+            <File>
+              <FileName>modusocket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\modusocket.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2115,6 +2244,11 @@
               <FileName>machine_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>modesp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\modesp8266.c</FilePath>
             </File>
           </Files>
         </Group>

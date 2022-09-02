@@ -6,6 +6,7 @@
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
 #include "tos_hal_uart.h"
+#include "tos_at.h"
 #endif
 
 typedef struct _machine_uart_obj_t {
@@ -19,6 +20,7 @@ typedef struct _machine_uart_obj_t {
     uint16_t rx_fifo_buf_len;
     uint16_t timeout;           // timeout waiting for first char
     uint16_t timeout_char;      // timeout waiting between chars
+    at_agent_t *at_agent;
     uint8_t init : 1;
 } machine_uart_obj_t;
 

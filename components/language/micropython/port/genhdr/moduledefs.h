@@ -36,6 +36,10 @@ extern const struct _mp_obj_module_t mp_module_micropython;
 #undef MODULE_DEF_MP_QSTR_MICROPYTHON
 #define MODULE_DEF_MP_QSTR_MICROPYTHON { MP_ROM_QSTR(MP_QSTR_micropython), MP_ROM_PTR(&mp_module_micropython) },
 
+extern const struct _mp_obj_module_t mp_module_network;
+#undef MODULE_DEF_MP_QSTR_NETWORK
+#define MODULE_DEF_MP_QSTR_NETWORK { MP_ROM_QSTR(MP_QSTR_network), MP_ROM_PTR(&mp_module_network) },
+
 extern const struct _mp_obj_module_t mp_module_uarray;
 #undef MODULE_DEF_MP_QSTR_UARRAY
 #define MODULE_DEF_MP_QSTR_UARRAY { MP_ROM_QSTR(MP_QSTR_uarray), MP_ROM_PTR(&mp_module_uarray) },
@@ -92,6 +96,10 @@ extern const struct _mp_obj_module_t mp_module_uselect;
 #undef MODULE_DEF_MP_QSTR_USELECT
 #define MODULE_DEF_MP_QSTR_USELECT { MP_ROM_QSTR(MP_QSTR_uselect), MP_ROM_PTR(&mp_module_uselect) },
 
+extern const struct _mp_obj_module_t mp_module_usocket;
+#undef MODULE_DEF_MP_QSTR_USOCKET
+#define MODULE_DEF_MP_QSTR_USOCKET { MP_ROM_QSTR(MP_QSTR_usocket), MP_ROM_PTR(&mp_module_usocket) },
+
 extern const struct _mp_obj_module_t mp_module_ustruct;
 #undef MODULE_DEF_MP_QSTR_USTRUCT
 #define MODULE_DEF_MP_QSTR_USTRUCT { MP_ROM_QSTR(MP_QSTR_ustruct), MP_ROM_PTR(&mp_module_ustruct) },
@@ -116,6 +124,7 @@ extern const struct _mp_obj_module_t mp_module_uzlib;
     MODULE_DEF_MP_QSTR_GC \
     MODULE_DEF_MP_QSTR_MATH \
     MODULE_DEF_MP_QSTR_MICROPYTHON \
+    MODULE_DEF_MP_QSTR_NETWORK \
     MODULE_DEF_MP_QSTR_UARRAY \
     MODULE_DEF_MP_QSTR_UBINASCII \
     MODULE_DEF_MP_QSTR_UCOLLECTIONS \
@@ -130,6 +139,7 @@ extern const struct _mp_obj_module_t mp_module_uzlib;
     MODULE_DEF_MP_QSTR_URANDOM \
     MODULE_DEF_MP_QSTR_URE \
     MODULE_DEF_MP_QSTR_USELECT \
+    MODULE_DEF_MP_QSTR_USOCKET \
     MODULE_DEF_MP_QSTR_USTRUCT \
     MODULE_DEF_MP_QSTR_USYS \
     MODULE_DEF_MP_QSTR_UTIME \
