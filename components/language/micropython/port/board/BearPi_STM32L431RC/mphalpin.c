@@ -12,7 +12,7 @@
 /********************** GPIO *************************/
 
 #define PIN(p_port, p_pin) \
-    const machine_pin_obj_t machine_pin_##p_port##p_pin##_obj = { \
+    machine_pin_obj_t machine_pin_##p_port##p_pin##_obj = { \
         {&machine_pin_type}, \
         .name = MP_QSTR_##p_port##p_pin, \
         .gpio = GPIO##p_port, \
@@ -109,15 +109,15 @@ STATIC int mask2no(uint32_t mask) {
 #define no2mask(no) \
     (1UL << (no))
 
-int mp_hal_pin_read(const machine_pin_obj_t *pin) {
+int mp_hal_pin_read(machine_pin_obj_t *pin) {
     return (GPIO_PIN_SET == HAL_GPIO_ReadPin(pin->gpio, no2mask(pin->pin_no)) ? 1 : 0);
 }
 
-void mp_hal_pin_write(const machine_pin_obj_t *pin, int v) {
+void mp_hal_pin_write(machine_pin_obj_t *pin, int v) {
     HAL_GPIO_WritePin(pin->gpio, no2mask(pin->pin_no), (v == 1) ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
-void mp_hal_pin_config(const machine_pin_obj_t *pin, uint32_t mode, uint32_t pull, uint32_t alt) {
+void mp_hal_pin_config(machine_pin_obj_t *pin, uint32_t mode, uint32_t pull, uint32_t alt) {
     GPIO_InitTypeDef GPIO_InitStruct;
     GPIO_InitStruct.Pin = no2mask(pin->pin_no);
     GPIO_InitStruct.Mode = mode;
@@ -127,7 +127,7 @@ void mp_hal_pin_config(const machine_pin_obj_t *pin, uint32_t mode, uint32_t pul
     HAL_GPIO_Init(pin->gpio, &GPIO_InitStruct);
 }
 
-void mp_hal_gpio_clock_enable(const machine_pin_obj_t *pin) {
+void mp_hal_gpio_clock_enable(machine_pin_obj_t *pin) {
     #define AHBxENR AHB2ENR
     #define AHBxENR_GPIOAEN_Pos RCC_AHB2ENR_GPIOAEN_Pos
 
@@ -137,7 +137,7 @@ void mp_hal_gpio_clock_enable(const machine_pin_obj_t *pin) {
     (void)tmp;
 }
 
-const machine_pin_obj_t *mp_hal_get_pin_obj(mp_obj_t name) {
+machine_pin_obj_t *mp_hal_get_pin_obj(mp_obj_t name) {
     const mp_map_t *named_map = &machine_pins_locals_dict.map;
     mp_map_elem_t *named_elem = mp_map_lookup((mp_map_t *)named_map, name, MP_MAP_LOOKUP);
     if (named_elem != NULL && named_elem->value != MP_OBJ_NULL) {
@@ -146,30 +146,26 @@ const machine_pin_obj_t *mp_hal_get_pin_obj(mp_obj_t name) {
     return NULL;
 }
 
-qstr mp_hal_pin_name(const machine_pin_obj_t *pin) {
+qstr mp_hal_pin_name(machine_pin_obj_t *pin) {
     return pin->name;
 }
 
-void mp_hal_pin_print(const mp_print_t *print, const machine_pin_obj_t *pin) {
+void mp_hal_pin_print(const mp_print_t *print, machine_pin_obj_t *pin) {
     mp_printf(print, "Pin(%q)", pin->name);
 }
 
 /********************** External Interrupt *************************/
-#define EXTI_NUM_VECTORS        (16)
 
-STATIC const uint8_t nvic_irq_channel[EXTI_NUM_VECTORS] = {
+STATIC const uint8_t nvic_irq_channel[MP_HAL_EXTI_NUM_VECTORS] = {
     EXTI0_IRQn,     EXTI1_IRQn,     EXTI2_IRQn,     EXTI3_IRQn,
     EXTI4_IRQn,     EXTI9_5_IRQn,   EXTI9_5_IRQn,   EXTI9_5_IRQn,
     EXTI9_5_IRQn,   EXTI9_5_IRQn,   EXTI15_10_IRQn, EXTI15_10_IRQn,
     EXTI15_10_IRQn, EXTI15_10_IRQn, EXTI15_10_IRQn, EXTI15_10_IRQn,
 };
 
-STATIC mp_obj_t machine_pin_irq_handler[EXTI_NUM_VECTORS];
-STATIC mp_obj_t machine_pin_irq_handler_arg[EXTI_NUM_VECTORS];
-
-STATIC void extint_enable(int line) {
+void mp_hal_extint_enable(int line) {
     TOS_CPU_CPSR_ALLOC();
-    if (line >= EXTI_NUM_VECTORS) {
+    if (line >= MP_HAL_EXTI_NUM_VECTORS) {
         return;
     }
     TOS_CPU_INT_DISABLE();
@@ -177,9 +173,9 @@ STATIC void extint_enable(int line) {
     TOS_CPU_INT_ENABLE();
 }
 
-STATIC void extint_disable(int line) {
+void mp_hal_extint_disable(int line) {
     TOS_CPU_CPSR_ALLOC();
-    if (line >= EXTI_NUM_VECTORS) {
+    if (line >= MP_HAL_EXTI_NUM_VECTORS) {
         return;
     }
     TOS_CPU_INT_DISABLE();
@@ -187,34 +183,21 @@ STATIC void extint_disable(int line) {
     TOS_CPU_INT_ENABLE();
 }
 
-STATIC void mp_hal_extint_config(const machine_pin_obj_t *pin, uint32_t mode) {
+void mp_hal_extint_config(machine_pin_obj_t *pin, uint32_t mode) {
     GPIO_InitTypeDef GPIO_InitStruct;
     GPIO_InitStruct.Pin = no2mask(pin->pin_no);
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
     GPIO_InitStruct.Alternate = 0;
     GPIO_InitStruct.Mode = mode;
-    GPIO_InitStruct.Pull = (mode == MP_HAL_PIN_IRQ_RISING) ? MP_HAL_PIN_PULL_DOWN : MP_HAL_PIN_PULL_UP;
+    GPIO_InitStruct.Pull = pin->pull;
     HAL_GPIO_Init(pin->gpio, &GPIO_InitStruct);
 
     HAL_NVIC_SetPriority(nvic_irq_channel[pin->pin_no], IRQ_PRI_EXTINT, 0);
     HAL_NVIC_EnableIRQ(nvic_irq_channel[pin->pin_no]);
 }
 
-void mp_hal_extint_register_pin(const machine_pin_obj_t *pin, uint32_t mode, mp_obj_t handler) {
-    uint32_t line = pin->pin_no;
-    if (machine_pin_irq_handler[line] != mp_const_none && machine_pin_irq_handler_arg[line] != MP_OBJ_FROM_PTR(pin)) {
-        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("ExtInt vector %d is already in use"), line);
-    }
-    extint_disable(line);
-    machine_pin_irq_handler[line] = handler;
-    machine_pin_irq_handler_arg[line] = MP_OBJ_FROM_PTR(pin);
-    extint_enable(line);
-    mp_hal_extint_config(pin, mode);
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{
+extern void machine_pin_isr_handler(uint32_t line);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     uint32_t line = mask2no(GPIO_Pin);
-    mp_obj_t handler = machine_pin_irq_handler[line];
-    mp_sched_schedule(handler, machine_pin_irq_handler_arg[line]);
+    machine_pin_isr_handler(line);
 }

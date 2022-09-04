@@ -160,6 +160,7 @@ typedef long mp_off_t;
 
 #define MICROPY_PORT_ROOT_POINTERS \
     const char *readline_hist[8]; \
+    mp_obj_t machine_pin_irq_handler[MP_HAL_EXTI_NUM_VECTORS]; \
     struct _machine_uart_obj_t *stdio_uart; \
     struct _machine_timer_obj_t *machine_timer_obj_head; \
     mp_obj_list_t mod_network_nic_list; \

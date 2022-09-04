@@ -76,6 +76,10 @@ soft_reset:
     }
     #endif
 
+    #if MICROPY_PY_MACHINE
+    machine_pins_init();
+    #endif /* MICROPY_PY_MACHINE */
+
     #if MICROPY_PY_NETWORK
     mod_network_init();
     #endif

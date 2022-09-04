@@ -9,8 +9,14 @@
 #include "gpio.h"
 #endif
 
-STATIC const machine_pin_obj_t *machine_pin_find(mp_obj_t user_obj) {
-    const machine_pin_obj_t *pin_obj = mp_hal_get_pin_obj(user_obj);
+void machine_pins_init(void) {
+    for (int i = 0; i < MP_HAL_EXTI_NUM_VECTORS; i++) {
+        MP_STATE_PORT(machine_pin_irq_handler)[i] = mp_const_none;
+    }
+}
+
+STATIC machine_pin_obj_t *machine_pin_find(mp_obj_t user_obj) {
+    machine_pin_obj_t *pin_obj = mp_hal_get_pin_obj(user_obj);
     if (pin_obj) {
         return pin_obj;
     }
@@ -22,13 +28,13 @@ STATIC void machine_pin_print(const mp_print_t *print, mp_obj_t self_in, mp_prin
     mp_hal_pin_print(print, self);
 }
 
-STATIC mp_obj_t machine_pin_obj_init_helper(const machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args);
+STATIC mp_obj_t machine_pin_obj_init_helper(machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args);
 
 mp_obj_t mp_pin_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args) {
     mp_arg_check_num(n_args, n_kw, 1, MP_OBJ_FUN_ARGS_MAX, true);
 
     // Run an argument through the mapper and return the result.
-    const machine_pin_obj_t *pin = machine_pin_find(args[0]);
+    machine_pin_obj_t *pin = machine_pin_find(args[0]);
     if (pin == NULL) {
         mp_raise_ValueError(MP_ERROR_TEXT("invalid pin"));
     }
@@ -60,7 +66,7 @@ STATIC mp_obj_t machine_pin_call(mp_obj_t self_in, size_t n_args, size_t n_kw, c
 }
 
 // pin.init(mode=None, pull=-1, *, value, drive, hold)
-STATIC mp_obj_t machine_pin_obj_init_helper(const machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
+STATIC mp_obj_t machine_pin_obj_init_helper(machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     enum { ARG_mode, ARG_pull, ARG_value, ARG_alt };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_mode, MP_ARG_REQUIRED | MP_ARG_INT },
@@ -87,6 +93,7 @@ STATIC mp_obj_t machine_pin_obj_init_helper(const machine_pin_obj_t *self, size_
     if (!MP_HAL_IS_PIN_PULL(pull)) {
         mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("invalid pin pull: %d"), pull);
     }
+    self->pull = pull;
 
     mp_int_t alt = args[ARG_alt].u_int;
     // TODO: check IS_GPIO_AF
@@ -133,7 +140,31 @@ STATIC mp_obj_t machine_pin_on(mp_obj_t self_in) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(machine_pin_on_obj, machine_pin_on);
 
-/*
+STATIC mp_obj_t machine_pin_irq_handler_arg[MP_HAL_EXTI_NUM_VECTORS];
+
+void machine_pin_isr_handler(uint32_t line) {
+    mp_obj_t handler = MP_STATE_PORT(machine_pin_irq_handler)[line];
+    if (handler != MP_OBJ_NULL && handler != mp_const_none) {
+        mp_sched_schedule(handler, machine_pin_irq_handler_arg[line]);
+    }
+}
+
+STATIC void machine_pin_extint_register(const machine_pin_obj_t *pin, uint32_t mode, mp_obj_t handler) {
+    
+    uint32_t line = pin->pin_no;
+
+    if (MP_STATE_PORT(machine_pin_irq_handler)[line] != mp_const_none && machine_pin_irq_handler_arg[line] != MP_OBJ_FROM_PTR(pin)) {
+        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("ExtInt vector %d is already in use"), line);
+    }
+
+    mp_hal_extint_disable(line);
+    MP_STATE_PORT(machine_pin_irq_handler)[line] = handler;
+    machine_pin_irq_handler_arg[line] = MP_OBJ_FROM_PTR(pin);
+    mp_hal_extint_enable(line);
+    
+    mp_hal_extint_config(pin, mode);
+}
+
 // pin.irq(handler=None,  trigger=IRQ_FALLING|IRQ_RISING)
 STATIC mp_obj_t machine_pin_irq(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     // TODO
@@ -148,14 +179,13 @@ STATIC mp_obj_t machine_pin_irq(size_t n_args, const mp_obj_t *pos_args, mp_map_
 
     if (n_args > 1 || kw_args->used != 0) {
         // configure irq
-        mp_hal_extint_register_pin(self, args[ARG_trigger].u_int, args[ARG_handler].u_obj);
+        machine_pin_extint_register(self, args[ARG_trigger].u_int, args[ARG_handler].u_obj);
     }
 
     // TODO: return the irq object
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(machine_pin_irq_obj, 1, machine_pin_irq);
-*/
 
 STATIC const mp_rom_map_elem_t machine_pin_locals_dict_table[] = {
     // instance methods
@@ -163,7 +193,7 @@ STATIC const mp_rom_map_elem_t machine_pin_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_value), MP_ROM_PTR(&machine_pin_value_obj) },
     { MP_ROM_QSTR(MP_QSTR_off), MP_ROM_PTR(&machine_pin_off_obj) },
     { MP_ROM_QSTR(MP_QSTR_on), MP_ROM_PTR(&machine_pin_on_obj) },
-    // { MP_ROM_QSTR(MP_QSTR_irq), MP_ROM_PTR(&machine_pin_irq_obj) },
+    { MP_ROM_QSTR(MP_QSTR_irq), MP_ROM_PTR(&machine_pin_irq_obj) },
 
     // class constants
     { MP_ROM_QSTR(MP_QSTR_IN),        MP_ROM_INT(MP_HAL_PIN_MODE_INPUT) },

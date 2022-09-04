@@ -2,3 +2,5 @@
 #define MICROPY_HW_MCU_NAME                         "STM32F431RC"
 
 #define MICROPY_HW_UART_REPL                        2
+
+#define MP_HAL_EXTI_NUM_VECTORS         (16)
