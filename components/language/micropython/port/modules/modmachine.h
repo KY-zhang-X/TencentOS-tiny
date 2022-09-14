@@ -6,6 +6,7 @@
 extern const mp_obj_type_t machine_pin_type;
 extern const mp_obj_type_t machine_uart_type;
 extern const mp_obj_type_t machine_timer_type;
+extern const mp_obj_type_t machine_hard_spi_type;
 
 void machine_pins_init(void);
 void machine_timer_deinit_all(void);
