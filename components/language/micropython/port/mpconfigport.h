@@ -5,11 +5,7 @@
 #include "mpconfigboard.h"
 
 #ifndef MICROPY_CONFIG_ROM_LEVEL
-// #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_MINIMUM)
-// #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_CORE_FEATURES)
-// #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES)
 #define MICROPY_CONFIG_ROM_LEVEL (MICROPY_CONFIG_ROM_LEVEL_EXTRA_FEATURES)
-
 #endif
 
 // Object representation
@@ -25,7 +21,6 @@
 
 // Python internal features
 #define MICROPY_READER_POSIX            (0)
-#define MICROPY_READER_VFS              (1)
 #define MICROPY_ENABLE_GC               (1)
 #define MICROPY_HELPER_REPL             (1)
 // #define MICROPY_TRACKED_ALLOC           (MICROPY_SSL_MBEDTLS)
@@ -42,10 +37,17 @@
 #define MICROPY_USE_INTERNAL_PRINTF     (0)
 #define MICROPY_SCHEDULER_DEPTH         (4)
 #define MICROPY_PY_SYS_STDIO_BUFFER     (1)
+#ifdef MP_USING_VFS
+#define MICROPY_PY_IO                   (1)
+#define MICROPY_READER_VFS              (1)
 #define MICROPY_VFS                     (1)
 #define MICROPY_VFS_TOS                 (1)
 #define MICROPY_VFS_POSIX               (0)
 #define MICROPY_VFS_FAT                 (0)
+#else
+#define MICROPY_PY_IO                   (0)
+#define MICROPY_READER_VFS              (0)
+#endif
 
 
 // Control over Python builtins
@@ -76,13 +78,19 @@
 #define MICROPY_PY_UOS_UNAME            (1)
 #define MICROPY_PY_MACHINE              (1)
 #define MICROPY_PY_MACHINE_PIN_MAKE_NEW mp_pin_make_new
+#ifdef MP_USING_MACHINE_SPI
 #define MICROPY_PY_MACHINE_SPI          (1)
 #define MICROPY_PY_MACHINE_SOFTSPI      (1)
+#endif
+#ifdef MP_USING_MACHINE_I2C
 #define MICROPY_PY_MACHINE_I2C          (1)
 #define MICROPY_PY_MACHINE_SOFTI2C      (1)
+#endif
+#ifdef MP_USING_NETWORK
 #define MICROPY_PY_NETWORK              (1)
 #define MICROPY_PY_NETWORK_ESP8266      (1)
 #define MICROPY_PY_USOCKET              (1)
+#endif
 
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio

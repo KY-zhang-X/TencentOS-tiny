@@ -1245,7 +1245,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mp_tos_hal_spi.c</PathWithFileName>
+      <PathWithFileName>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_spi.c</PathWithFileName>
       <FilenameWithoutPath>mp_tos_hal_spi.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>

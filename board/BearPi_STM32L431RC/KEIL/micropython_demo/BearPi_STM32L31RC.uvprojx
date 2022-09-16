@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,NDEBUG</Define>
+              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,NDEBUG,MP_USING_QSPI_FLASH,MP_USING_VFS,MP_USING_NETWORK,MP_USING_MACHINE_SPI,MP_USING_MACHINE_I2C</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\genhdr;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\genhdr;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -810,7 +810,7 @@
             <File>
               <FileName>mp_tos_hal_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mp_tos_hal_spi.c</FilePath>
+              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_spi.c</FilePath>
             </File>
           </Files>
         </Group>

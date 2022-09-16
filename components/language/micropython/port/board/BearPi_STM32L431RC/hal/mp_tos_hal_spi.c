@@ -1,18 +1,15 @@
-#if !(MP_GEN_HDR)
 #include "tos_k.h"
 #include "mp_tos_hal_spi.h"
 #include "stm32l4xx_hal.h"
 #include "spi.h"
-#endif
 
 __API__ int tos_hal_spi_init(hal_spi_t *spi, hal_spi_port_t port)
 {
     if (!spi) {
         return -1;
     }
-    if (port == HAL_SPI_PORT_0) {
-        
-    } else if (port == HAL_SPI_PORT_1) {
+    
+    if (port == HAL_SPI_PORT_1) {
         spi->private_spi = &hspi1;
         MX_SPI1_Init();
     } else if (port == HAL_SPI_PORT_2) {
@@ -21,6 +18,8 @@ __API__ int tos_hal_spi_init(hal_spi_t *spi, hal_spi_port_t port)
     } else if (port == HAL_SPI_PORT_3) {
         spi->private_spi = &hspi3;
         MX_SPI3_Init();
+    } else {
+        return -1;
     }
 
     return 0;

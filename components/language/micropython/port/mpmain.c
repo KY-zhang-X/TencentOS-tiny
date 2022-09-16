@@ -9,6 +9,9 @@
 #include "shared/runtime/pyexec.h"
 
 #include "modmachine.h"
+#if MICROPY_PY_NETWORK
+#include "extmod/modnetwork.h"
+#endif
 
 #if MICROPY_VFS_TOS
 #include "extmod/vfs.h"
@@ -84,7 +87,17 @@ soft_reset:
     mod_network_init();
     #endif
 
-    // Start a normal REPL; will exit when ctrl-D is entered on a blank line.
+    // run boot-up scripts
+    // pyexec_frozen_module("_boot.py");
+    pyexec_file_if_exists("boot.py");
+    if (pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL) {
+        int ret = pyexec_file_if_exists("main.py");
+        if (ret & PYEXEC_FORCED_EXIT) {
+            goto soft_reset_exit;
+        }
+    }
+
+    // start a normal REPL; will exit when ctrl-D is entered on a blank line.
     for (;;) {
         if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
             if (pyexec_raw_repl() != 0) {
@@ -99,8 +112,6 @@ soft_reset:
 
 soft_reset_exit:
 
-    mp_printf(&mp_plat_print, "exit repl\n");
-
     #if MICROPY_PY_MACHINE
     machine_timer_deinit_all();
     #endif
@@ -112,6 +123,8 @@ soft_reset_exit:
     // Deinitialise the runtime.
     gc_sweep_all();
 
+    mp_hal_stdout_tx_str("MPY: soft reboot\r\n");
+
     mp_deinit();
 
     goto soft_reset;
@@ -119,25 +132,27 @@ soft_reset_exit:
 
 // Handle uncaught exceptions (should never be reached in a correct C implemetation).
 void nlr_jump_fail(void *val) {
+    printf("FATAL: uncaught exception %p\n", val);
     mp_obj_print_exception(&mp_plat_print, MP_OBJ_FROM_PTR(val));
     for (;;) {
-        tos_task_delay(500);
     }
 }
 
 // Do a garbage collection cycle
 void gc_collect(void) {
+
     gc_collect_start();
 
     uintptr_t stack_base = (uint32_t)tos_task_curr_task_get()->stk_base;
     gc_collect_root((void **)stack_base, ((uintptr_t)MP_STATE_THREAD(stack_top) - (uintptr_t)stack_base) / sizeof(uintptr_t));
     
-    // trace root pointers from any threads
     #if MICROPY_PY_THREAD
+    // trace root pointers from any threads
     mp_thread_gc_others();
     #endif
 
     gc_collect_end();
+    // gc_dump_info();
 }
 
 #if !(MICROPY_VFS)
@@ -150,6 +165,21 @@ mp_import_stat_t mp_import_stat(const char *path) {
 #if !(MICROPY_READER_VFS)
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
     mp_raise_OSError(MP_ENOENT);
+}
+#endif
+
+#ifndef NDEBUG
+#if defined(__CC_ARM)
+void __aeabi_assert(const char *expr, const char *file, int line) {
+    printf("Assertion '%s' failed, at file %s:%d\n", expr, file, line);
+    for (;;) {
+    }
+}
+#endif
+NORETURN void MP_WEAK __assert_func(const char *file, int line, const char *func, const char *expr) {
+    (void)func;
+    printf("Assertion '%s' failed, at file %s:%d\n", expr, file, line);
+    mp_raise_msg(&mp_type_AssertionError, MP_ERROR_TEXT("C-level assert"));
 }
 #endif
 

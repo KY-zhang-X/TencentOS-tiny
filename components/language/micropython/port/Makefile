@@ -20,7 +20,12 @@ INC = $(addprefix -I,\
 	$(BUILD) \
 	)
 
-DEF_C = -DMP_GEN_HDR=1
+DEF_C = -DMP_GEN_HDR=1 \
+		-DMP_USING_QSPI_FLASH \
+		-DMP_USING_VFS \
+		-DMP_USING_NETWORK \
+		-DMP_USING_MACHINE_SPI \
+		-DMP_USING_MACHINE_I2C \
 
 CFLAGS = $(INC) $(DEF_C)
 
@@ -41,7 +46,7 @@ PORT_MODULE_SRC_C = \
 	$(wildcard ./modules/*.c) \
 
 PORT_BOARD_SRC_C = \
-	$(wildcard $(BOARD_DIR)/*.c) \
+	$(filter-out $(BOARD_DIR)/hal/*.c,$(wildcard $(BOARD_DIR)/*.c)) \
 
 SRC_QSTR += $(SHARED_SRC_C) $(EXTMOD_SRC_C) $(PORT_MODULE_SRC_C) $(PORT_BOARD_SRC_C)
 

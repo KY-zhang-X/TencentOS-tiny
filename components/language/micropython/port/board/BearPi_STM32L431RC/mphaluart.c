@@ -7,7 +7,9 @@
 
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
+#if MICROPY_PY_NETWORK
 #include "tos_at.h"
+#endif
 #endif
 
 /************************** UART *******************************/
@@ -56,11 +58,13 @@ static void uart_irq_handler(uint32_t uart_id) {
     
     machine_uart_rx_start(self);
 
+    #if MICROPY_PY_NETWORK
     // if UART is used as at agent
     if (self->at_agent) {
         tos_at_uart_input_byte(self->at_agent, self->rx_char_buf);
         return;
     }
+    #endif
 
     if (self->rx_fifo_buf) {
         tos_chr_fifo_push(&self->rx_fifo, self->rx_char_buf);
