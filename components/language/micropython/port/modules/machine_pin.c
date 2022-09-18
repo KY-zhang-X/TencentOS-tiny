@@ -5,14 +5,63 @@
 #include "py/mphal.h"
 #include "py/runtime.h"
 #include "extmod/virtpin.h"
+#include "modmachine.h"
 #if !(MP_GEN_HDR)
-#include "gpio.h"
+#include "mp_tos_hal_pin.h"
 #endif
 
-void machine_pins_init(void) {
-    for (int i = 0; i < MP_HAL_EXTI_NUM_VECTORS; i++) {
-        MP_STATE_PORT(machine_pin_irq_handler)[i] = mp_const_none;
+typedef struct  _machine_pin_obj_t {
+    mp_obj_base_t base;
+    hal_pin_port_t port;
+    hal_pin_t pin;
+    qstr name;
+    mp_obj_t handler;
+} machine_pin_obj_t;
+
+void mp_hal_pin_write(machine_pin_obj_t *pin, int v) {
+    if (tos_hal_pin_write(&pin->pin, v) != 0) {
+        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to be written"), pin->name);
     }
+}
+
+int mp_hal_pin_read(machine_pin_obj_t * pin) {
+    int v = tos_hal_pin_read(&pin->pin);
+    if (v < 0) {
+        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to be read"), pin->name);
+    }
+    return v;
+}
+
+void mp_hal_pin_config(machine_pin_obj_t * pin, uint32_t mode) {
+    if (tos_hal_pin_init(&pin->pin, pin->port, mode) != 0) {
+        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to be configured"), pin->name);
+    }
+}
+
+qstr mp_hal_pin_name(machine_pin_obj_t *pin) {
+    return pin->name;
+}
+
+extern const mp_obj_dict_t machine_pins_locals_dict;
+
+machine_pin_obj_t *mp_hal_get_pin_obj(mp_obj_t name) {
+    const mp_map_t *named_map = &machine_pins_locals_dict.map;
+    mp_map_elem_t *named_elem = mp_map_lookup((mp_map_t *)named_map, name, MP_MAP_LOOKUP);
+    machine_pin_obj_t *pin;
+    if (named_elem != NULL && named_elem->value != MP_OBJ_NULL) {
+        pin = m_new_obj(machine_pin_obj_t);
+        pin->port = mp_obj_get_int(named_elem->value);
+        pin->name = mp_obj_str_get_qstr(name);
+        pin->base.type = &machine_pin_type;
+        pin->handler = mp_const_none;
+        return pin;
+    }
+    return NULL;
+}
+
+
+void machine_pins_init(void) {
+    
 }
 
 STATIC machine_pin_obj_t *machine_pin_find(mp_obj_t user_obj) {
@@ -25,7 +74,7 @@ STATIC machine_pin_obj_t *machine_pin_find(mp_obj_t user_obj) {
 
 STATIC void machine_pin_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     machine_pin_obj_t *self = self_in;
-    mp_hal_pin_print(print, self);
+    mp_printf(print, "Pin(%q)", self->name);
 }
 
 STATIC mp_obj_t machine_pin_obj_init_helper(machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args);
@@ -44,9 +93,6 @@ mp_obj_t mp_pin_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, 
         mp_map_t kw_args;
         mp_map_init_fixed_table(&kw_args, n_kw, args + n_args);
         machine_pin_obj_init_helper(pin, n_args - 1, args + 1, &kw_args);
-    } else {
-        // enable the peripheral clock so pin reading at least works
-        mp_hal_gpio_clock_enable(pin);
     }
 
     return MP_OBJ_FROM_PTR(pin);
@@ -67,39 +113,21 @@ STATIC mp_obj_t machine_pin_call(mp_obj_t self_in, size_t n_args, size_t n_kw, c
 
 // pin.init(mode=None, pull=-1, *, value, drive, hold)
 STATIC mp_obj_t machine_pin_obj_init_helper(machine_pin_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
-    enum { ARG_mode, ARG_pull, ARG_value, ARG_alt };
+    enum { ARG_mode, ARG_value };
     static const mp_arg_t allowed_args[] = {
         { MP_QSTR_mode, MP_ARG_REQUIRED | MP_ARG_INT },
-        { MP_QSTR_pull, MP_ARG_OBJ, {.u_rom_obj = MP_ROM_NONE}},
         { MP_QSTR_value, MP_ARG_KW_ONLY | MP_ARG_OBJ, {.u_obj = MP_OBJ_NULL}},
-        { MP_QSTR_alt, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = -1}},
     };
     
     // parse args
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
     mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
-    // get io mode
+    // get mode
     uint mode = args[ARG_mode].u_int;
     if (!MP_HAL_IS_PIN_MODE(mode)) {
         mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("invalid pin mode: %d"), mode);
     }
-
-    // get pull mode
-    uint pull = MP_HAL_PIN_PULL_NONE;
-    if (args[ARG_pull].u_obj != mp_const_none) {
-        pull = mp_obj_get_int(args[1].u_obj);
-    }
-    if (!MP_HAL_IS_PIN_PULL(pull)) {
-        mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("invalid pin pull: %d"), pull);
-    }
-    self->pull = pull;
-
-    mp_int_t alt = args[ARG_alt].u_int;
-    // TODO: check IS_GPIO_AF
-
-    // enable the peripheral clock for the port of this pin
-    mp_hal_gpio_clock_enable(self);
 
     // if given, set the pin value before initialising to prevent glitches
     if (args[ARG_value].u_obj != MP_OBJ_NULL) {
@@ -107,7 +135,7 @@ STATIC mp_obj_t machine_pin_obj_init_helper(machine_pin_obj_t *self, size_t n_ar
     }
 
     // configure the GPIO as requested
-    mp_hal_pin_config(self, mode, pull, alt);
+    mp_hal_pin_config(self, mode);
 
     return mp_const_none;
 }
@@ -140,49 +168,36 @@ STATIC mp_obj_t machine_pin_on(mp_obj_t self_in) {
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(machine_pin_on_obj, machine_pin_on);
 
-STATIC mp_obj_t machine_pin_irq_handler_arg[MP_HAL_EXTI_NUM_VECTORS];
-
-void machine_pin_isr_handler(uint32_t line) {
-    mp_obj_t handler = MP_STATE_PORT(machine_pin_irq_handler)[line];
-    if (handler != MP_OBJ_NULL && handler != mp_const_none) {
-        mp_sched_schedule(handler, machine_pin_irq_handler_arg[line]);
-    }
-}
-
-STATIC void machine_pin_extint_register(const machine_pin_obj_t *pin, uint32_t mode, mp_obj_t handler) {
-    
-    uint32_t line = pin->pin_no;
-
-    if (MP_STATE_PORT(machine_pin_irq_handler)[line] != mp_const_none && machine_pin_irq_handler_arg[line] != MP_OBJ_FROM_PTR(pin)) {
-        mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("ExtInt vector %d is already in use"), line);
-    }
-
-    mp_hal_extint_disable(line);
-    MP_STATE_PORT(machine_pin_irq_handler)[line] = handler;
-    machine_pin_irq_handler_arg[line] = MP_OBJ_FROM_PTR(pin);
-    mp_hal_extint_enable(line);
-    
-    mp_hal_extint_config(pin, mode);
+void machine_pin_isr_handler(void *arg) {
+    machine_pin_obj_t *self = (machine_pin_obj_t *)arg;
+    mp_sched_schedule(self->handler, MP_OBJ_FROM_PTR(self));
 }
 
 // pin.irq(handler=None,  trigger=IRQ_FALLING|IRQ_RISING)
 STATIC mp_obj_t machine_pin_irq(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
-    // TODO
     enum { ARG_handler, ARG_trigger };
     static const mp_arg_t allowed_args[] = {
-        { MP_QSTR_handler, MP_ARG_OBJ, {.u_rom_obj = MP_ROM_NONE} },
-        { MP_QSTR_trigger, MP_ARG_INT, {.u_int = MP_HAL_PIN_IRQ_RISING |MP_HAL_PIN_IRQ_FALLING} },
+        { MP_QSTR_handler, MP_ARG_OBJ, {.u_obj = mp_const_none} },
+        { MP_QSTR_trigger, MP_ARG_INT, {.u_int = HAL_PIN_IRQ_RISING|HAL_PIN_IRQ_FALLING } },
     };
     machine_pin_obj_t *self = MP_OBJ_TO_PTR(pos_args[0]);
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
     if (n_args > 1 || kw_args->used != 0) {
-        // configure irq
-        machine_pin_extint_register(self, args[ARG_trigger].u_int, args[ARG_handler].u_obj);
-    }
+        // set handler
+        mp_obj_t handler = args[ARG_handler].u_obj;
+        if (handler == mp_const_none || !mp_obj_is_callable(handler)) {
+            mp_raise_msg(&mp_type_ValueError, MP_ERROR_TEXT("invalid irq handler"));
+        }
+        self->handler = handler;
 
-    // TODO: return the irq object
+        // configure irq
+        if ((tos_hal_pin_irq_callback(&self->pin, machine_pin_isr_handler, self) != 0)
+        ||  (tos_hal_pin_irq(&self->pin, args[ARG_trigger].u_int) != 0)) {
+            mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to configure irq"), self->name);
+        }
+    }
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(machine_pin_irq_obj, 1, machine_pin_irq);
@@ -196,16 +211,13 @@ STATIC const mp_rom_map_elem_t machine_pin_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_irq), MP_ROM_PTR(&machine_pin_irq_obj) },
 
     // class constants
-    { MP_ROM_QSTR(MP_QSTR_IN),        MP_ROM_INT(MP_HAL_PIN_MODE_INPUT) },
-    { MP_ROM_QSTR(MP_QSTR_OUT),       MP_ROM_INT(MP_HAL_PIN_MODE_OUTPUT) },
-    { MP_ROM_QSTR(MP_QSTR_OPEN_DRAIN), MP_ROM_INT(MP_HAL_PIN_MODE_OPEN_DRAIN) },
-    { MP_ROM_QSTR(MP_QSTR_ALT),       MP_ROM_INT(MP_HAL_PIN_MODE_ALT) },
-    { MP_ROM_QSTR(MP_QSTR_ALT_OPEN_DRAIN), MP_ROM_INT(MP_HAL_PIN_MODE_ALT_OPEN_DRAIN) },
-    { MP_ROM_QSTR(MP_QSTR_ANALOG),    MP_ROM_INT(MP_HAL_PIN_MODE_ANALOG) },
-    { MP_ROM_QSTR(MP_QSTR_PULL_UP),   MP_ROM_INT(MP_HAL_PIN_PULL_UP) },
-    { MP_ROM_QSTR(MP_QSTR_PULL_DOWN), MP_ROM_INT(MP_HAL_PIN_PULL_DOWN) },
-    { MP_ROM_QSTR(MP_QSTR_IRQ_RISING), MP_ROM_INT(MP_HAL_PIN_IRQ_RISING) },
-    { MP_ROM_QSTR(MP_QSTR_IRQ_FALLING), MP_ROM_INT(MP_HAL_PIN_IRQ_FALLING) },
+    { MP_ROM_QSTR(MP_QSTR_IN),        MP_ROM_INT(HAL_PIN_MODE_INPUT) },
+    { MP_ROM_QSTR(MP_QSTR_OUT),       MP_ROM_INT(HAL_PIN_MODE_OUTPUT) },
+    { MP_ROM_QSTR(MP_QSTR_OPEN_DRAIN), MP_ROM_INT(HAL_PIN_MODE_OUTPUT_OD) },
+    { MP_ROM_QSTR(MP_QSTR_IN_PULLUP),   MP_ROM_INT(HAL_PIN_MODE_INPUT_PULLUP) },
+    { MP_ROM_QSTR(MP_QSTR_IN_PULLDOWN), MP_ROM_INT(HAL_PIN_MODE_INPUT_PULLDOWN) },
+    { MP_ROM_QSTR(MP_QSTR_IRQ_RISING), MP_ROM_INT(HAL_PIN_IRQ_RISING) },
+    { MP_ROM_QSTR(MP_QSTR_IRQ_FALLING), MP_ROM_INT(HAL_PIN_IRQ_FALLING) },
 };
 
 STATIC MP_DEFINE_CONST_DICT(machine_pin_locals_dict, machine_pin_locals_dict_table);
