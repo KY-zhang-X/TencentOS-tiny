@@ -4,15 +4,48 @@
 #include "py/obj.h"
 #include "py/runtime.h"
 #include "py/stream.h"
+#include "modmachine.h"
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
+#include "tos_at.h"
 #include "tos_hal_uart.h"
+#include "mp_tos_hal_uart.h"
 #endif
 
-extern machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj);
-extern void machine_uart_rx_start(machine_uart_obj_t *self);
+typedef struct _machine_uart_obj_t {
+    mp_obj_base_t base;
+    hal_uart_port_t port;
+    hal_uart_t uart;
+    // k_mutex_t tx_lock;
+    uint8_t rx_char_buf;
+    k_sem_t rx_sem;
+    k_chr_fifo_t rx_fifo;
+    uint8_t *rx_fifo_buf;
+    uint16_t rx_fifo_buf_len;
+    uint16_t timeout;           // timeout waiting for first char
+    uint16_t timeout_char;      // timeout waiting between chars
+    at_agent_t *at_agent;
+    uint8_t init : 1;
+} machine_uart_obj_t;
+
+STATIC machine_uart_obj_t machine_uart_obj_all[MICROPY_HW_UART_NUM];
+
+void machine_uart_rx_start(machine_uart_obj_t *self) {
+    if (self->rx_fifo_buf || self->at_agent) {
+        tos_hal_uart_recv_start(&self->uart, &self->rx_char_buf, 1);
+    }
+}
+
+void mp_hal_uart_rx_start(uint32_t uart_id) {
+    machine_uart_obj_t *self = &machine_uart_obj_all[uart_id];
+    if (self == NULL || !self->init) {
+        return;
+    }
+    machine_uart_rx_start(self);
+}
 
 int machine_uart_rx_chr(machine_uart_obj_t *self) {
+
     k_err_t err;
     uint8_t chr;
 
@@ -32,10 +65,67 @@ int machine_uart_rx_chr(machine_uart_obj_t *self) {
 }
 
 int machine_uart_tx_strn(machine_uart_obj_t *self, const char *str, mp_uint_t len) {
-    if (K_ERR_NONE != tos_hal_uart_write(&self->uart, (const uint8_t *)str, len, 0xFFFF)) {
-        return -1;
+    int ret = 0;
+    
+    // tos_mutex_pend(&self->tx_lock);
+    ret = tos_hal_uart_write(&self->uart, (const uint8_t *)str, len, 0xFFFF);
+    // tos_mutex_post(&self->tx_lock);
+
+    return ret;
+}
+
+void mp_hal_uart_irq_handler(uint32_t uart_id) {
+
+    machine_uart_obj_t *self;
+    if (uart_id >= MICROPY_HW_UART_NUM) {
+        return;
     }
-    return 0;
+
+    self = &machine_uart_obj_all[uart_id];
+    if (self == NULL || !self->init) {
+        return;
+    }
+    
+    machine_uart_rx_start(self);
+
+    #if MICROPY_PY_NETWORK
+    // if UART is used as AT agent
+    if (self->at_agent) {
+        tos_at_uart_input_byte(self->at_agent, self->rx_char_buf);
+        return;
+    }
+    #endif
+
+    if (self->rx_fifo_buf) {
+        tos_chr_fifo_push(&self->rx_fifo, self->rx_char_buf);
+        tos_sem_post(&self->rx_sem);
+    }
+}
+
+void machine_uart_set_at_agent(machine_uart_obj_t *self, at_agent_t *at_agent) {
+    self->at_agent = at_agent;
+}
+
+hal_uart_port_t machine_uart_get_port(machine_uart_obj_t *self) {
+    return self->port;
+}
+
+
+
+STATIC machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj) {
+    machine_uart_obj_t *uart = NULL;
+    if (mp_obj_is_int(user_obj)) {
+        mp_uint_t uart_id = mp_obj_get_int(user_obj);
+        if (uart_id < MICROPY_HW_UART_NUM)
+            uart = &machine_uart_obj_all[uart_id];
+            if (uart->init == 0) {
+                uart->base.type = &machine_uart_type;
+                uart->port = (hal_uart_port_t)uart_id;
+                uart->rx_fifo_buf = NULL;
+                uart->at_agent = NULL;
+            }
+    }
+    return uart;
 }
 
 STATIC void machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -60,7 +150,9 @@ mp_obj_t machine_uart_make_new(const mp_obj_type_t *type, size_t n_args, size_t 
 
     mp_map_t kw_args;
     mp_map_init_fixed_table(&kw_args, n_kw, args + n_args);
-    machine_uart_init_helper(uart, n_args - 1, args + 1, &kw_args);
+    if (!uart->init) {
+        machine_uart_init_helper(uart, n_args - 1, args + 1, &kw_args);
+    }
 
     return MP_OBJ_FROM_PTR(uart);
 }
@@ -221,9 +313,16 @@ mp_uint_t machine_uart_read(mp_obj_t self_in, void *buf_in, mp_uint_t size, int 
 
 mp_uint_t machine_uart_write(mp_obj_t self_in, const void *buf, mp_uint_t size, int *errcode) {
     machine_uart_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    if (0 != tos_hal_uart_write(&self->uart, (uint8_t *)buf, size, 0xFFFF)) {   // timeout_char ?
+    int ret;
+
+    // tos_mutex_pend(&self->tx_lock);
+    ret = tos_hal_uart_write(&self->uart, (uint8_t *)buf, size, 0xFFFF);
+    // tos_mutex_post(&self->tx_lock);
+
+    if (ret != 0) {
         return MP_STREAM_ERROR;
     }
+
     return size;
 }
 

@@ -33,7 +33,7 @@ int mp_hal_pin_read(machine_pin_obj_t * pin) {
 }
 
 void mp_hal_pin_config(machine_pin_obj_t * pin, uint32_t mode) {
-    if (tos_hal_pin_init(&pin->pin, pin->port, mode) != 0) {
+    if (tos_hal_pin_init(&pin->pin, pin->port, (hal_pin_mode_t)mode) != 0) {
         mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to be configured"), pin->name);
     }
 }
@@ -194,7 +194,7 @@ STATIC mp_obj_t machine_pin_irq(size_t n_args, const mp_obj_t *pos_args, mp_map_
 
         // configure irq
         if ((tos_hal_pin_irq_callback(&self->pin, machine_pin_isr_handler, self) != 0)
-        ||  (tos_hal_pin_irq(&self->pin, args[ARG_trigger].u_int) != 0)) {
+        ||  (tos_hal_pin_irq(&self->pin, (hal_pin_irq_t)args[ARG_trigger].u_int) != 0)) {
             mp_raise_msg_varg(&mp_type_OSError, MP_ERROR_TEXT("Pin(%q) failed to configure irq"), self->name);
         }
     }
@@ -235,7 +235,7 @@ STATIC mp_uint_t pin_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, i
             return 0;
         }
     }
-    return -1;
+    return (mp_uint_t)-1;
 }
 
 STATIC const mp_pin_p_t pin_pin_p = {

@@ -8,6 +8,7 @@
 #include "py/stream.h"
 #include "py/mperrno.h"
 #include "extmod/modnetwork.h"
+#include "machine_uart.h"
 
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
@@ -121,7 +122,7 @@ STATIC mp_uint_t socket_send(struct _mod_network_socket_obj_t *socket, const byt
     if (ret < 0) {
         // FIXME: no more detailed errno
         *_errno = MP_EPERM;
-        return -1;
+        return (mp_uint_t)-1;
     }
     return ret;
 }
@@ -131,7 +132,7 @@ STATIC mp_uint_t socket_recv(struct _mod_network_socket_obj_t *socket, byte *buf
     if (ret < 0) {
         // FIXME: no more detailed errno
         *_errno = MP_EPERM;
-        return -1;
+        return (mp_uint_t)-1;
     }
     return ret;
 }
@@ -142,7 +143,7 @@ STATIC mp_uint_t socket_sendto(struct _mod_network_socket_obj_t *socket, const b
     if (ret < 0) {
         // FIXME: no more detailed errno
         *_errno = MP_EPERM;
-        return -1;
+        return (mp_uint_t)-1;
     }
     return ret;
 }
@@ -154,7 +155,7 @@ STATIC mp_uint_t socket_recvfrom(struct _mod_network_socket_obj_t *socket, byte 
     if (ret < 0) {
         // FIXME
         *_errno = MP_EPERM;
-        return -1;
+        return (mp_uint_t)-1;
     }
     UNPACK_SOCKADDR(addr, ip, *port);
     return ret;
@@ -185,7 +186,7 @@ STATIC int socket_ioctl(struct _mod_network_socket_obj_t *socket, mp_uint_t requ
         return ret;
     } else {
         *_errno = MP_EINVAL;
-        return MP_STREAM_ERROR;
+        return (int)MP_STREAM_ERROR;
     }
 }
 
@@ -209,15 +210,11 @@ STATIC mp_obj_t esp8266_make_new(const mp_obj_type_t *type, size_t n_args, size_
 
     if (!esp8266_obj.init) {
         machine_uart_obj_t *uart = MP_OBJ_TO_PTR(args[0]);
-        if (!uart->init) {
-            mp_raise_msg_varg(&mp_type_OSError, "UART(%u) is not init", uart->port);
-        }
-
-        uart->at_agent = &esp8266_agent;
+        machine_uart_set_at_agent(uart, &esp8266_agent);
         machine_uart_rx_start(uart);
-        if (0 != esp8266_sal_init(uart->port)) {
+        if (0 != esp8266_sal_init(machine_uart_get_port(uart))) {
 				    esp8266_sal_deinit();
-            uart->at_agent = NULL;
+            machine_uart_set_at_agent(uart, NULL);
             mp_raise_msg(&mp_type_OSError, "can't setup esp8266");
         }
 

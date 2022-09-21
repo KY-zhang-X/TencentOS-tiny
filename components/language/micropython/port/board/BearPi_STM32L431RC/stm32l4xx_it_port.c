@@ -26,7 +26,7 @@
 #endif
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "machine_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -346,6 +346,17 @@ void LPUART1_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == LPUART1) {
+        mp_hal_uart_irq_handler(0);
+    } else if (huart->Instance == USART1) {
+        mp_hal_uart_irq_handler(1); 
+    } else if (huart->Instance == USART2) {
+        mp_hal_uart_irq_handler(2);
+    } else if (huart->Instance == USART3) {
+        mp_hal_uart_irq_handler(3);
+    }
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

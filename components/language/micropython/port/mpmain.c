@@ -1,4 +1,5 @@
 #include "py/mpconfig.h"
+#include "py/mphal.h"
 #include "py/mpthread.h"
 #include "py/compile.h"
 #include "py/gc.h"

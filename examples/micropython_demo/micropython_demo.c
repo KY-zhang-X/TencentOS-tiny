@@ -35,7 +35,6 @@ void mp_entry(void *arg) {
     
     for (;;) {
         mp_main();
-        mp_printf(&mp_plat_print, "exit mp_main()\n");
         tos_task_delay(100);
     }
 }

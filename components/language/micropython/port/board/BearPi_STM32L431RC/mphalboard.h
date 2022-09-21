@@ -7,8 +7,6 @@
 #include "tos_hal_uart.h"
 #endif
 #include "py/obj.h"
-#include "mphalpin.h"
-#include "mphaluart.h"
 #include "mphalspi.h"
 
 #define IRQ_PRI_SYSTICK         0

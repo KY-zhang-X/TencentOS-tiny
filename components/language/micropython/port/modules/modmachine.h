@@ -3,12 +3,12 @@
 
 #include "py/obj.h"
 
-extern const mp_obj_type_t machine_pin_type;
-extern const mp_obj_type_t machine_uart_type;
+#include "machine_pin.h"
+#include "machine_uart.h"
+
 extern const mp_obj_type_t machine_timer_type;
 extern const mp_obj_type_t machine_hard_spi_type;
 
-void machine_pins_init(void);
 void machine_timer_deinit_all(void);
 
 #endif /* _MODMACHINE_H_ */
