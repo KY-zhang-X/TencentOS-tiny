@@ -6,13 +6,37 @@
 #include "py/obj.h"
 #include "py/runtime.h"
 #include "extmod/machine_spi.h"
+#include "modmachine.h"
 
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
 #include "mp_tos_hal_spi.h"
 #endif
 
-extern machine_hard_spi_obj_t *machine_spi_find(mp_obj_t user_obj);
+typedef struct _machine_hard_spi_obj_t {
+    mp_obj_base_t base;
+    hal_spi_port_t port;
+    hal_spi_t spi;
+    uint16_t timeout;
+    uint16_t timeout_char;
+    uint8_t init : 1;
+} machine_hard_spi_obj_t;
+
+STATIC machine_hard_spi_obj_t machine_hard_spi_obj_all[MICROPY_HW_SPI_NUM];
+
+STATIC machine_hard_spi_obj_t *machine_hard_spi_find(mp_obj_t user_obj) {
+    machine_hard_spi_obj_t *spi = NULL;
+    if (mp_obj_is_int(user_obj)) {
+        mp_uint_t spi_id = mp_obj_get_int(user_obj);
+        if (spi_id < MICROPY_HW_SPI_NUM)
+            spi = &machine_hard_spi_obj_all[spi_id];
+            if (!spi->init) {
+                spi->base.type = &machine_hard_spi_type;
+                spi->port = (hal_spi_port_t)spi_id;
+            }
+    }
+    return spi;
+}
 
 STATIC void machine_hard_spi_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     machine_hard_spi_obj_t *self = MP_OBJ_TO_PTR(self_in);
