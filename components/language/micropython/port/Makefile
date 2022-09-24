@@ -1,6 +1,12 @@
 BUILD = build
-BOARD ?= BearPi_STM32L431RC
-BOARD_DIR ?= board/$(BOARD)
+# BOARD ?= BearPi_STM32L431RC
+# BOARD_DIR = E:/WorkSpace/VSCode/VSCode_C_MCU/TencentOS-tiny/board/BearPi_STM32L431RC/KEIL/micropython_extra_demo/board
+ifneq ($(PORT_BOARD_DIR), )
+BOARD_DIR := $(subst \,/,$(PORT_BOARD_DIR))
+else
+$(warning "PORT_BOARD_DIR should be specified")
+endif
+BOARD_DIR ?= board
 
 include ../py/mkenv.mk
 -include $(BOARD_DIR)/mpconfigboard.mk
@@ -16,9 +22,9 @@ CROSS_COMPILE ?= arm-none-eabi-
 INC = $(addprefix -I,\
 	. \
 	modules \
-	$(BOARD_DIR) \
 	$(TOP) \
 	$(BUILD) \
+	$(BOARD_DIR) \
 	)
 
 DEF_C = -DMP_GEN_HDR=1 \

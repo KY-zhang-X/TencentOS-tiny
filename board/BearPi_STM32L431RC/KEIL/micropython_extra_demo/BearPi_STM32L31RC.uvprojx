@@ -72,8 +72,8 @@
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build</UserProg1Name>
-            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python BOARD=BearPi_STM32L431RC TARGET_GENHDR_DIR=$Pgenhdr PORT_DEF_C="-DMP_USING_QSPI_FLASH -DMP_USING_VFS -DMP_USING_NETWORK -DMP_USING_MACHINE_SPI -DMP_USING_MACHINE_I2C"</UserProg2Name>
+            <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build V=1</UserProg1Name>
+            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python PORT_BOARD_DIR=$Pboard TARGET_GENHDR_DIR=$Pgenhdr</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,NDEBUG,MP_USING_QSPI_FLASH,MP_USING_VFS,MP_USING_NETWORK,MP_USING_MACHINE_SPI,MP_USING_MACHINE_I2C</Define>
+              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal;..\micropython_extra_demo</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\micropython_extra_demo;.\board;.\board\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -808,19 +808,19 @@
               <FilePath>..\..\..\..\platform\hal\st\stm32l4xx\src\tos_hal_sd.c</FilePath>
             </File>
             <File>
-              <FileName>mp_tos_hal_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>mp_tos_hal_pin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_pin.c</FilePath>
+              <FilePath>..\micropython_basic_demo\board\hal\mp_tos_hal_pin.c</FilePath>
+            </File>
+            <File>
+              <FileName>mp_tos_hal_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\micropython_basic_demo\board\hal\mp_tos_hal_spi.c</FilePath>
             </File>
             <File>
               <FileName>mp_tos_hal_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_uart.c</FilePath>
+              <FilePath>..\micropython_basic_demo\board\hal\mp_tos_hal_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2137,11 +2137,6 @@
               <FilePath>..\..\..\..\components\language\micropython\port\mpthreadport.c</FilePath>
             </File>
             <File>
-              <FileName>mphalboard.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mphalboard.c</FilePath>
-            </File>
-            <File>
               <FileName>machine_hw_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_hw_spi.c</FilePath>
@@ -2185,6 +2180,11 @@
               <FileName>vfs_tos_file.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos_file.c</FilePath>
+            </File>
+            <File>
+              <FileName>mphalboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\micropython_basic_demo\board\mphalboard.c</FilePath>
             </File>
           </Files>
         </Group>

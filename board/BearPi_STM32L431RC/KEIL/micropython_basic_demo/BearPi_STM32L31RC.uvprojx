@@ -72,8 +72,8 @@
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build</UserProg1Name>
-            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python BOARD=BearPi_STM32L431RC TARGET_GENHDR_DIR=$Pgenhdr PORT_DEF_C=-DMICROPY_CONFIG_ROM_LEVEL=MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES</UserProg2Name>
+            <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build V=1</UserProg1Name>
+            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python PORT_BOARD_DIR=$Pboard TARGET_GENHDR_DIR=$Pgenhdr</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,MICROPY_CONFIG_ROM_LEVEL=MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES</Define>
+              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\..\..\examples\micropython_basic_demo;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal;..\..\..\..\components\language\micropython\port\modules;..\micropython_basic_demo</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\..\..\examples\micropython_basic_demo;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\micropython_basic_demo;.\board;.\board\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -735,12 +735,17 @@
             <File>
               <FileName>mp_tos_hal_pin.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_pin.c</FilePath>
+              <FilePath>.\board\hal\mp_tos_hal_pin.c</FilePath>
+            </File>
+            <File>
+              <FileName>mp_tos_hal_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\board\hal\mp_tos_hal_spi.c</FilePath>
             </File>
             <File>
               <FileName>mp_tos_hal_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_uart.c</FilePath>
+              <FilePath>.\board\hal\mp_tos_hal_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1510,7 +1515,7 @@
             <File>
               <FileName>mphalboard.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mphalboard.c</FilePath>
+              <FilePath>.\board\mphalboard.c</FilePath>
             </File>
           </Files>
         </Group>
