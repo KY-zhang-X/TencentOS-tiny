@@ -70,10 +70,10 @@
             <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
-            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build</UserProg1Name>
-            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python BOARD=BearPi_STM32L431RC TARGET_GENHDR_DIR=$Pgenhdr PORT_DEF_C="-DMP_USING_QSPI_FLASH -DMP_USING_VFS -DMP_USING_NETWORK -DMP_USING_MACHINE_SPI -DMP_USING_MACHINE_I2C"</UserProg2Name>
+            <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python BOARD=BearPi_STM32L431RC TARGET_GENHDR_DIR=$Pgenhdr PORT_DEF_C=-DMICROPY_CONFIG_ROM_LEVEL=MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -259,8 +259,8 @@
               </XRAM>
               <OCR_RVCT1>
                 <Type>1</Type>
-                <StartAddress>0x90000000</StartAddress>
-                <Size>0x800000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
               </OCR_RVCT1>
               <OCR_RVCT2>
                 <Type>1</Type>
@@ -275,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x40000</Size>
+                <Size>0x400000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -336,9 +336,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,NDEBUG,MP_USING_QSPI_FLASH,MP_USING_VFS,MP_USING_NETWORK,MP_USING_MACHINE_SPI,MP_USING_MACHINE_I2C</Define>
+              <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266,MICROPY_CONFIG_ROM_LEVEL=MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\..\..\devices\esp8266;..\..\..\..\net\at\include;..\..\..\..\net\sal_module_wrapper;..\..\..\..\net\socket_wrapper\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\BSP\Hardware\W25QXX-QSPI;..\..\..\..\examples\micropython_demo;..\..\..\..\components\fs\vfs\include;..\..\..\..\components\fs\fatfs\wrapper\include;..\..\..\..\components\fs\fatfs\3rdparty;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal;.\genhdr;..\micropython_demo</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\..\..\examples\micropython_basic_demo;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC;..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal;..\..\..\..\components\language\micropython\port\modules;..\micropython_basic_demo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -413,11 +413,6 @@
               <FilePath>..\..\BSP\Src\stm32l4xx_hal_msp.c</FilePath>
             </File>
             <File>
-              <FileName>stm32l4xx_it_port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\stm32l4xx_it_port.c</FilePath>
-            </File>
-            <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\BSP\Src\usart.c</FilePath>
@@ -438,14 +433,9 @@
               <FilePath>..\..\BSP\Src\spi.c</FilePath>
             </File>
             <File>
-              <FileName>sdmmc.c</FileName>
+              <FileName>stm32l4xx_it_mpy.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\BSP\Src\sdmmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>quadspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\BSP\Src\quadspi.c</FilePath>
+              <FilePath>..\..\BSP\Src\stm32l4xx_it_mpy.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -453,9 +443,9 @@
           <GroupName>examples</GroupName>
           <Files>
             <File>
-              <FileName>micropython_demo.c</FileName>
+              <FileName>micropython_basic_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\examples\micropython_demo\micropython_demo.c</FilePath>
+              <FilePath>..\..\..\..\examples\micropython_basic_demo\micropython_basic_demo.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -582,26 +572,6 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_spi_ex.c</FilePath>
             </File>
-            <File>
-              <FileName>stm32l4xx_hal_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32l4xx_hal_sd_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_sd_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32l4xx_ll_sdmmc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Src\stm32l4xx_ll_sdmmc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32l4xx_hal_qspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Src\stm32l4xx_hal_qspi.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -626,11 +596,6 @@
               <FileName>lcd_spi2_drv.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\BSP\Hardware\LCD_ST7789\lcd_spi2_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>w25qxx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\BSP\Hardware\W25QXX-QSPI\w25qxx.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -757,10 +722,25 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\kernel\core\tos_ring_queue.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>hal</GroupName>
+          <Files>
             <File>
-              <FileName>tos_stopwatch.c</FileName>
+              <FileName>tos_hal_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\kernel\core\tos_stopwatch.c</FilePath>
+              <FilePath>..\..\..\..\platform\hal\st\stm32l4xx\src\tos_hal_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>mp_tos_hal_pin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_pin.c</FilePath>
+            </File>
+            <File>
+              <FileName>mp_tos_hal_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -795,280 +775,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>hal</GroupName>
-          <Files>
-            <File>
-              <FileName>tos_hal_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\hal\st\stm32l4xx\src\tos_hal_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_hal_sd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\platform\hal\st\stm32l4xx\src\tos_hal_sd.c</FilePath>
-            </File>
-            <File>
-              <FileName>mp_tos_hal_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>mp_tos_hal_pin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_pin.c</FilePath>
-            </File>
-            <File>
-              <FileName>mp_tos_hal_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\hal\mp_tos_hal_uart.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>net</GroupName>
-          <Files>
-            <File>
-              <FileName>tos_at.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\net\at\src\tos_at.c</FilePath>
-            </File>
-            <File>
-              <FileName>sal_module_wrapper.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\net\sal_module_wrapper\sal_module_wrapper.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_at_socket.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_at_socket_lib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket_lib.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_at_socket_prv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\net\socket_wrapper\tos_at_socket_prv.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>devices</GroupName>
-          <Files>
-            <File>
-              <FileName>esp8266.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\devices\esp8266\esp8266.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>vfs</GroupName>
-          <Files>
-            <File>
-              <FileName>tos_vfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\vfs\tos_vfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_vfs_device.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\vfs\tos_vfs_device.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_vfs_file.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\vfs\tos_vfs_file.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_vfs_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\vfs\tos_vfs_fs.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_vfs_inode.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\vfs\tos_vfs_inode.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>fatfs</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>tos_diskio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_diskio.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_fatfs_drv.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_fatfs_drv.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_fatfs_vfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_fatfs_vfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_ff.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_ff.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_ffsystem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_ffsystem.c</FilePath>
-            </File>
-            <File>
-              <FileName>tos_ffunicode.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\fs\fatfs\wrapper\tos_ffunicode.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>micropython/py</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
+          <GroupName>micropython/core</GroupName>
           <Files>
             <File>
               <FileName>argcheck.c</FileName>
@@ -1665,94 +1372,10 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\py\warning.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>micropython/shared</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
             <File>
               <FileName>readline.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\readline\readline.c</FilePath>
-            </File>
-            <File>
-              <FileName>pyexec.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\pyexec.c</FilePath>
-            </File>
-            <File>
-              <FileName>stdout_helpers.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\stdout_helpers.c</FilePath>
             </File>
             <File>
               <FileName>sys_stdio_mphal.c</FileName>
@@ -1760,88 +1383,44 @@
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\sys_stdio_mphal.c</FilePath>
             </File>
             <File>
+              <FileName>stdout_helpers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\stdout_helpers.c</FilePath>
+            </File>
+            <File>
+              <FileName>pyexec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\pyexec.c</FilePath>
+            </File>
+            <File>
               <FileName>interrupt_char.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\interrupt_char.c</FilePath>
             </File>
             <File>
-              <FileName>netutils.c</FileName>
+              <FileName>utime_mphal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\shared\netutils\netutils.c</FilePath>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\utime_mphal.c</FilePath>
+            </File>
+            <File>
+              <FileName>machine_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>machine_signal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_signal.c</FilePath>
+            </File>
+            <File>
+              <FileName>virtpin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\virtpin.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>micropython/port</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
           <Files>
             <File>
               <FileName>help.c</FileName>
@@ -1859,376 +1438,19 @@
               <FilePath>..\..\..\..\components\language\micropython\port\mpmain.c</FilePath>
             </File>
             <File>
+              <FileName>mpshellport.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\mpshellport.c</FilePath>
+            </File>
+            <File>
               <FileName>mpthreadport.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\mpthreadport.c</FilePath>
             </File>
             <File>
-              <FileName>mphalboard.c</FileName>
+              <FileName>machine_hw_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mphalboard.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>micropython/extmod</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>modframebuf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modframebuf.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduasyncio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduasyncio.c</FilePath>
-            </File>
-            <File>
-              <FileName>modubinascii.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modubinascii.c</FilePath>
-            </File>
-            <File>
-              <FileName>moductypes.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moductypes.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduhashlib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduhashlib.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduheapq.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduheapq.c</FilePath>
-            </File>
-            <File>
-              <FileName>modujson.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modujson.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduos.c</FilePath>
-            </File>
-            <File>
-              <FileName>modurandom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modurandom.c</FilePath>
-            </File>
-            <File>
-              <FileName>modure.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modure.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduselect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduselect.c</FilePath>
-            </File>
-            <File>
-              <FileName>moduzlib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\moduzlib.c</FilePath>
-            </File>
-            <File>
-              <FileName>vfs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\vfs.c</FilePath>
-            </File>
-            <File>
-              <FileName>vfs_reader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\vfs_reader.c</FilePath>
-            </File>
-            <File>
-              <FileName>uos_dupterm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\uos_dupterm.c</FilePath>
-            </File>
-            <File>
-              <FileName>utime_mphal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\utime_mphal.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_pinbase.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_pinbase.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_signal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_signal.c</FilePath>
-            </File>
-            <File>
-              <FileName>virtpin.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\virtpin.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>modnetwork.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modnetwork.c</FilePath>
-            </File>
-            <File>
-              <FileName>modusocket.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\modusocket.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>micropython/drivers</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>softspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\drivers\bus\softspi.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>micropython/modules</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>1</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>0</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>vfs_tos_file.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos_file.c</FilePath>
-            </File>
-            <File>
-              <FileName>vfs_tos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos.c</FilePath>
-            </File>
-            <File>
-              <FileName>modutime.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\modutime.c</FilePath>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_hw_spi.c</FilePath>
             </File>
             <File>
               <FileName>machine_pin.c</FileName>
@@ -2236,9 +1458,9 @@
               <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_pin.c</FilePath>
             </File>
             <File>
-              <FileName>modmachine.c</FileName>
+              <FileName>machine_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\modmachine.c</FilePath>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_timer.c</FilePath>
             </File>
             <File>
               <FileName>machine_uart.c</FileName>
@@ -2246,19 +1468,34 @@
               <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_uart.c</FilePath>
             </File>
             <File>
-              <FileName>machine_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_timer.c</FilePath>
-            </File>
-            <File>
               <FileName>modesp8266.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\modules\modesp8266.c</FilePath>
             </File>
             <File>
-              <FileName>machine_hw_spi.c</FileName>
+              <FileName>modmachine.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\modules\machine_hw_spi.c</FilePath>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\modmachine.c</FilePath>
+            </File>
+            <File>
+              <FileName>modutime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\modutime.c</FilePath>
+            </File>
+            <File>
+              <FileName>vfs_tos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos.c</FilePath>
+            </File>
+            <File>
+              <FileName>vfs_tos_file.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\modules\vfs_tos_file.c</FilePath>
+            </File>
+            <File>
+              <FileName>mphalboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\port\board\BearPi_STM32L431RC\mphalboard.c</FilePath>
             </File>
           </Files>
         </Group>

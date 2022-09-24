@@ -1,8 +1,9 @@
 BUILD = build
-BOARD = BearPi_STM32L431RC
-BOARD_DIR = board/$(BOARD)
+BOARD ?= BearPi_STM32L431RC
+BOARD_DIR ?= board/$(BOARD)
 
 include ../py/mkenv.mk
+-include $(BOARD_DIR)/mpconfigboard.mk
 
 MICROPY_ROM_TEXT_COMPRESSION ?= 1
 
@@ -21,11 +22,7 @@ INC = $(addprefix -I,\
 	)
 
 DEF_C = -DMP_GEN_HDR=1 \
-		-DMP_USING_QSPI_FLASH \
-		-DMP_USING_VFS \
-		-DMP_USING_NETWORK \
-		-DMP_USING_MACHINE_SPI \
-		-DMP_USING_MACHINE_I2C \
+		$(PORT_DEF_C)
 
 CFLAGS = $(INC) $(DEF_C)
 
@@ -51,17 +48,17 @@ PORT_BOARD_SRC_C = \
 SRC_QSTR += $(SHARED_SRC_C) $(EXTMOD_SRC_C) $(PORT_MODULE_SRC_C) $(PORT_BOARD_SRC_C)
 
 # Target genhdr directory
-TARGET_GENHDR_DIR = ./genhdr/
+TARGET_GENHDR_DIR ?= ./genhdr/
 
 # Generate header
-genhdr: $(HEADER_BUILD)/mpversion.h $(HEADER_BUILD)/qstrdefs.generated.h $(HEADER_BUILD)/moduledefs.h
+genhdr: $(HEADER_BUILD)/mpversion.h $(HEADER_BUILD)/qstrdefs.generated.h $(HEADER_BUILD)/moduledefs.h | $(TARGET_GENHDR_DIR)
 	$(CP) $^ $(TARGET_GENHDR_DIR)
 
 clean-build:
 	$(ECHO) "REMOVE $(BUILD)"
 	$(Q)$(RM) -rf $(BUILD)
 
-# $(TARGET_GENHDR_DIR): 
-# 	$(MKDIR) -p $@
+$(TARGET_GENHDR_DIR): 
+	$(MKDIR) -p $@
 
 include $(TOP)/py/mkrules.mk

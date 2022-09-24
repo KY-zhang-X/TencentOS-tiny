@@ -1,11 +1,6 @@
 #ifndef _MPHALBOARD_H_
 #define _MPHALBOARD_H_
 
-#if !(MP_GEN_HDR)
-#include "main.h"
-#include "tos_k.h"
-#include "tos_hal_uart.h"
-#endif
 #include "py/obj.h"
 
 extern mp_uint_t mp_hal_ticks_us(void);

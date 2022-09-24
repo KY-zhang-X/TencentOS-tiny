@@ -6,6 +6,7 @@ extern void mp_hal_set_interrupt_char(char c);
 #include "py/obj.h"
 
 #if !(MP_GEN_HDR)
+#include "tos_k.h"
 #include "mp_tos_hal_pin.h"
 #endif
 

@@ -19,11 +19,9 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#if !(MP_GEN_HDR)
 #include "main.h"
 #include "stm32l4xx_it.h"
 #include "tos_k.h"
-#endif
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "machine_uart.h"

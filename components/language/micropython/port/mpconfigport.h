@@ -16,6 +16,7 @@
 
 // Compiler configuration
 #define MICROPY_ENABLE_COMPILER         (1)
+#define MICROPY_KBD_EXCEPTION           (1)
 #define MICROPY_COMP_MODULE_CONST       (0)
 #define MICROPY_DEBUG_VERBOSE           (0)
 
@@ -37,6 +38,7 @@
 #define MICROPY_USE_INTERNAL_PRINTF     (0)
 #define MICROPY_SCHEDULER_DEPTH         (4)
 #define MICROPY_PY_SYS_STDIO_BUFFER     (1)
+#define MICROPY_ENABLE_SCHEDULER        (1)
 #ifdef MP_USING_VFS
 #define MICROPY_PY_IO                   (1)
 #define MICROPY_READER_VFS              (1)
@@ -57,9 +59,6 @@
 #define MICROPY_PY_ALL_INPLACE_SPECIAL_METHODS (1)
 #define MICROPY_PY_BUILTINS_HELP_TEXT   tencentos_tiny_help_text
 #define MICROPY_PY_GC_COLLECT_RETVAL    (0)
-// #define MICROPY_PY_IO                   (0)
-// #define MICROPY_PY_IO_BUFFEREDWRITER    (0)
-// #define MICROPY_PY_SYS_MODULES          (1)
 // TODO: lgammaf() is not supported
 #define MICROPY_PY_MATH_SPECIAL_FUNCTIONS (0)
 #define MICROPY_PY_UTIME                (1)
@@ -67,12 +66,10 @@
 #define MICROPY_PY_THREAD               (1)
 
 // Extended modules
-// #define MICROPY_PY_UTIMEQ               (0)
 // #define MICROPY_PY_UHASHLIB_MD5         (0)
 // #define MICROPY_PY_UHASHLIB_SHA1        (0)
 // #define MICROPY_PY_UHASHLIB_SHA256      (1)
 // #define MICROPY_PY_UCRYPTOLIB           (0)
-// #define MICROPY_PY_UJSON                (0)
 #define MICROPY_PY_OS_DUPTERM           (0)
 #define MICROPY_PY_UOS_DUPTERM_NOTIFY   (0)
 #define MICROPY_PY_UOS_UNAME            (1)
@@ -86,11 +83,52 @@
 #define MICROPY_PY_MACHINE_I2C          (1)
 #define MICROPY_PY_MACHINE_SOFTI2C      (1)
 #endif
+
+#ifdef MP_USING_CMATH
+#define MICROPY_PY_CMATH                (1)
+#endif
+#ifdef MP_USING_UASYNCIO
+#define MICROPY_PY_UASYNCIO             (1)
+#endif
+#ifdef MP_USING_UCTYPES
+#define MICROPY_PY_UCTYPES              (1)
+#endif
+#ifdef MP_USING_UZLIBS
+#define MICROPY_PY_UZLIBS               (1)
+#endif
+#ifdef MP_USING_UJSON
+#define MICROPY_PY_UJSON                (1)
+#endif
+#ifdef MP_USING_URE
+#define MICROPY_PY_URE                  (1)
+#endif
+#ifdef MP_USING_HEAPQ
+#define MICROPY_PY_HEAPQ                (1)
+#endif
+#ifdef MP_USING_UHASHLIB
+#define MICROPY_PY_UHASHLIB             (1)
+#endif
+#ifdef MP_USING_UBINASCII
+#define MICROPY_PY_UBINASCII            (1)
+#endif
+#ifdef MP_USING_URANDOM
+#define MICROPY_PY_URANDOM              (1)
+#define MICROPY_PY_URANDOM_EXTRA_FUNCS  (1)
+#endif
+#ifdef MP_USING_FRAMEBUF
+#define MICROPY_PY_FRAMEBUF             (1)
+#endif
+
+
 #ifdef MP_USING_NETWORK
 #define MICROPY_PY_NETWORK              (1)
 #define MICROPY_PY_NETWORK_ESP8266      (1)
 #define MICROPY_PY_USOCKET              (1)
 #endif
+#ifdef MP_USING_USELECT
+#define MICROPY_PY_USELECT              (1)
+#endif
+
 
 #if MICROPY_VFS_TOS
 #define mp_type_fileio mp_type_vfs_tos_fileio
