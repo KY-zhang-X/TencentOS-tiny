@@ -1,6 +1,6 @@
 #include "tos_k.h"
 #include "mpmain.h"
-#include "py/builtin.h"
+#include "mpconfigboard.h"
 
 #ifdef MP_USING_VFS
 #include "tos_vfs.h"
@@ -11,9 +11,10 @@
 #include "w25qxx.h"
 #endif /* MP_USING_QSPI_FLASH */
 
-#define MP_SHELL_BUF_SIZE   (512)
 #define MP_TASK_PRIO        (3)
+#ifndef MP_TASK_STACK_SIZE
 #define MP_TASK_STACK_SIZE  (4 * 1024)
+#endif
 
 // MicroPython task stack
 __STATIC__ k_stack_t mp_task_stack[MP_TASK_STACK_SIZE];

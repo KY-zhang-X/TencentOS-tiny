@@ -71,7 +71,7 @@
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>1</RunUserProg2>
+            <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make clean-build</UserProg1Name>
             <UserProg2Name>cmd.exe /C cd $P..\..\..\..\components\language\micropython\port &amp; make genhdr V=1 PYTHON=python BOARD=BearPi_STM32L431RC TARGET_GENHDR_DIR=$Pgenhdr PORT_DEF_C=-DMICROPY_CONFIG_ROM_LEVEL=MICROPY_CONFIG_ROM_LEVEL_BASIC_FEATURES</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
@@ -413,6 +413,11 @@
               <FilePath>..\..\BSP\Src\stm32l4xx_hal_msp.c</FilePath>
             </File>
             <File>
+              <FileName>stm32l4xx_it_mpy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\BSP\Src\stm32l4xx_it_mpy.c</FilePath>
+            </File>
+            <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\BSP\Src\usart.c</FilePath>
@@ -432,20 +437,15 @@
               <FileType>1</FileType>
               <FilePath>..\..\BSP\Src\spi.c</FilePath>
             </File>
-            <File>
-              <FileName>stm32l4xx_it_mpy.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\BSP\Src\stm32l4xx_it_mpy.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>examples</GroupName>
           <Files>
             <File>
-              <FileName>micropython_basic_demo.c</FileName>
+              <FileName>micropython_demo.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\examples\micropython_basic_demo\micropython_basic_demo.c</FilePath>
+              <FilePath>..\..\..\..\examples\micropython_demo\micropython_demo.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -775,7 +775,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>micropython/core</GroupName>
+          <GroupName>micropython/py</GroupName>
           <Files>
             <File>
               <FileName>argcheck.c</FileName>
@@ -1372,20 +1372,15 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\py\warning.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>micropython/shared</GroupName>
+          <Files>
             <File>
               <FileName>readline.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\readline\readline.c</FilePath>
-            </File>
-            <File>
-              <FileName>sys_stdio_mphal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\sys_stdio_mphal.c</FilePath>
-            </File>
-            <File>
-              <FileName>stdout_helpers.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\stdout_helpers.c</FilePath>
             </File>
             <File>
               <FileName>pyexec.c</FileName>
@@ -1393,19 +1388,34 @@
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\pyexec.c</FilePath>
             </File>
             <File>
+              <FileName>sys_stdio_mphal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\sys_stdio_mphal.c</FilePath>
+            </File>
+            <File>
               <FileName>interrupt_char.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\shared\runtime\interrupt_char.c</FilePath>
             </File>
             <File>
+              <FileName>stdout_helpers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\shared\runtime\stdout_helpers.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>micropython/extmod</GroupName>
+          <Files>
+            <File>
+              <FileName>machine_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_spi.c</FilePath>
+            </File>
+            <File>
               <FileName>utime_mphal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\utime_mphal.c</FilePath>
-            </File>
-            <File>
-              <FileName>machine_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_mem.c</FilePath>
             </File>
             <File>
               <FileName>machine_signal.c</FileName>
@@ -1416,6 +1426,11 @@
               <FileName>virtpin.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\virtpin.c</FilePath>
+            </File>
+            <File>
+              <FileName>machine_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_mem.c</FilePath>
             </File>
           </Files>
         </Group>
