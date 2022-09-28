@@ -47,6 +47,7 @@ int mp_main(void)
             MP_OBJ_NEW_QSTR(MP_QSTR_timeout_char), MP_OBJ_NEW_SMALL_INT(2),
         };
         uart_repl_obj = machine_uart_type.make_new(&machine_uart_type, 1, 3, args);
+        machine_uart_attach_to_repl(MP_OBJ_TO_PTR(uart_repl_obj), 1);
     }
     #endif /* MICROPY_HW_UART_REPL */
 

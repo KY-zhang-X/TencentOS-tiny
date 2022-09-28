@@ -275,7 +275,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x400000</Size>
+                <Size>0x40000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L431xx,WITH_TOS_NET_ADAPTER,USE_ESP8266</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\..\..\examples\micropython_basic_demo;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\micropython_basic_demo;.\board;.\board\hal</IncludePath>
+              <IncludePath>..\..\BSP\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Inc;..\..\..\..\platform\vendor_bsp\st\STM32L4xx_HAL_Driver\Legacy;..\..\..\..\platform\vendor_bsp\st\CMSIS\Device\ST\STM32L4xx\Include;..\..\..\..\platform\vendor_bsp\st\CMSIS\Include;..\..\..\..\kernel\core\include;..\..\TOS-CONFIG;..\..\..\..\platform\arch\arm\cortex-m4\keil;..\..\..\..\kernel\pm\include;..\..\..\..\osal\cmsis_os;..\..\..\..\arch\arm\arm-v7m\common\include;..\..\..\..\arch\arm\arm-v7m\cortex-m4\armcc;..\..\..\..\net\at\include;..\..\..\..\kernel\hal\include;..\..\BSP\Hardware\LCD_ST7789;..\..\BSP\Hardware\BH1750;..\..\..\..\examples\micropython_demo;..\..\..\..\components\language\micropython;..\..\..\..\components\language\micropython\port;..\..\..\..\components\language\micropython\port\modules;..\micropython_basic_demo;.\board;.\board\hal</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1413,11 +1413,6 @@
           <GroupName>micropython/extmod</GroupName>
           <Files>
             <File>
-              <FileName>machine_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\extmod\machine_spi.c</FilePath>
-            </File>
-            <File>
               <FileName>utime_mphal.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\extmod\utime_mphal.c</FilePath>
@@ -1456,11 +1451,6 @@
               <FileName>mpmain.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\components\language\micropython\port\mpmain.c</FilePath>
-            </File>
-            <File>
-              <FileName>mpshellport.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\..\components\language\micropython\port\mpshellport.c</FilePath>
             </File>
             <File>
               <FileName>mpthreadport.c</FileName>

@@ -4,6 +4,7 @@
 #include "py/obj.h"
 #include "py/runtime.h"
 #include "py/stream.h"
+#include "shared/runtime/interrupt_char.h"
 #include "modmachine.h"
 #if !(MP_GEN_HDR)
 #include "tos_k.h"
@@ -25,7 +26,8 @@ typedef struct _machine_uart_obj_t {
     uint16_t timeout;           // timeout waiting for first char
     uint16_t timeout_char;      // timeout waiting between chars
     at_agent_t *at_agent;
-    uint8_t init : 1;
+    uint8_t init;
+    uint8_t attached_to_repl;
 } machine_uart_obj_t;
 
 STATIC machine_uart_obj_t machine_uart_obj_all[MICROPY_HW_UART_NUM];
@@ -74,6 +76,10 @@ int machine_uart_tx_strn(machine_uart_obj_t *self, const char *str, mp_uint_t le
     return ret;
 }
 
+void machine_uart_attach_to_repl(machine_uart_obj_t *self, uint8_t attached) {
+    self->attached_to_repl = attached;
+}
+
 void mp_hal_uart_irq_handler(uint32_t uart_id) {
 
     machine_uart_obj_t *self;
@@ -95,6 +101,13 @@ void mp_hal_uart_irq_handler(uint32_t uart_id) {
         return;
     }
     #endif
+
+    if (self->attached_to_repl) {
+        if (mp_interrupt_char == self->rx_char_buf) {
+            mp_sched_keyboard_interrupt();
+            return;
+        }
+    }
 
     if (self->rx_fifo_buf) {
         tos_chr_fifo_push(&self->rx_fifo, self->rx_char_buf);
@@ -118,11 +131,12 @@ STATIC machine_uart_obj_t *machine_uart_find(mp_obj_t user_obj) {
         mp_uint_t uart_id = mp_obj_get_int(user_obj);
         if (uart_id < MICROPY_HW_UART_NUM)
             uart = &machine_uart_obj_all[uart_id];
-            if (uart->init == 0) {
+            if (uart->base.type == NULL) {
                 uart->base.type = &machine_uart_type;
                 uart->port = (hal_uart_port_t)uart_id;
                 uart->rx_fifo_buf = NULL;
                 uart->at_agent = NULL;
+								uart->init = 0;
             }
     }
     return uart;
@@ -190,6 +204,7 @@ STATIC mp_obj_t machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args
     if (self->timeout_char < 2) {
         self->timeout_char = 2;
     }
+    self->attached_to_repl = 0;
 
     // reset rx fifo buffer before reallocation
     if (self->rx_fifo_buf) {

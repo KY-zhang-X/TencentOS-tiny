@@ -1,9 +1,9 @@
 
 #define mp_hal_stdio_poll(poll_flags) (0) // NOT IMPLEMENT
-extern void mp_hal_set_interrupt_char(char c);
 
 #include "mphalboard.h"
 #include "py/obj.h"
+#include "shared/runtime/interrupt_char.h"
 
 #if !(MP_GEN_HDR)
 #include "tos_k.h"

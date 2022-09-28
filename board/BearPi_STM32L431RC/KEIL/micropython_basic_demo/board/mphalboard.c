@@ -34,7 +34,7 @@ void mp_hal_delay_us(mp_uint_t usec) {
     mp_uint_t ms = usec / 1000;
     mp_uint_t us = usec % 1000;
     if (ms > 0)
-        tos_task_delay(tos_millisec2tick(ms));
+        mp_hal_delay_ms(ms);
     mp_uint_t start = mp_hal_ticks_us();
     while (mp_hal_ticks_us() - start < us) {
     }

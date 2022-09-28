@@ -194,7 +194,7 @@ STATIC int socket_ioctl(struct _mod_network_socket_obj_t *socket, mp_uint_t requ
 typedef struct _esp8266_obj_t {
     mp_obj_base_t base;
     const machine_uart_obj_t *uart;
-    uint8_t init : 1;
+    uint8_t init;
 } esp8266_obj_t;
 
 STATIC esp8266_obj_t esp8266_obj = {

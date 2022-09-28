@@ -19,7 +19,7 @@ typedef struct _machine_hard_spi_obj_t {
     hal_spi_t spi;
     uint16_t timeout;
     uint16_t timeout_char;
-    uint8_t init : 1;
+    uint8_t init;
 } machine_hard_spi_obj_t;
 
 STATIC machine_hard_spi_obj_t machine_hard_spi_obj_all[MICROPY_HW_SPI_NUM];
@@ -30,9 +30,10 @@ STATIC machine_hard_spi_obj_t *machine_hard_spi_find(mp_obj_t user_obj) {
         mp_uint_t spi_id = mp_obj_get_int(user_obj);
         if (spi_id < MICROPY_HW_SPI_NUM)
             spi = &machine_hard_spi_obj_all[spi_id];
-            if (!spi->init) {
+            if (spi->base.type == NULL) {
                 spi->base.type = &machine_hard_spi_type;
                 spi->port = (hal_spi_port_t)spi_id;
+								spi->init = 0;
             }
     }
     return spi;

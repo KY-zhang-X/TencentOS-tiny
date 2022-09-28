@@ -16,7 +16,7 @@ MICROPY_ROM_TEXT_COMPRESSION ?= 1
 include $(TOP)/py/py.mk
 
 # Select the cross compile prefix
-CROSS_COMPILE ?= arm-none-eabi-
+# CROSS_COMPILE ?= arm-none-eabi-
 
 # Set CFLAGS and libraries.	
 INC = $(addprefix -I,\

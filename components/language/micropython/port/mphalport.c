@@ -31,7 +31,12 @@ void mp_hal_stdout_tx_strn(const char *str, mp_uint_t len)
 
 void mp_hal_delay_ms(mp_uint_t ms)
 {
-    tos_task_delay(tos_millisec2tick(ms));
+    k_tick_t start_tick = tos_systick_get();
+    k_tick_t ticks = tos_millisec2tick(ms);
+    while (tos_systick_get() < start_tick + ticks) {
+        MICROPY_EVENT_POLL_HOOK
+        tos_task_delay(1);
+    }
 }
 
 mp_uint_t mp_hal_ticks_ms(void)

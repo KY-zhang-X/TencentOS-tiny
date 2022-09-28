@@ -21,6 +21,7 @@ void mp_hal_uart_irq_handler(uint32_t uart_id);
 int machine_uart_rx_chr(machine_uart_obj_t *self);
 int machine_uart_tx_strn(machine_uart_obj_t *self, const char *str, mp_uint_t len);
 void machine_uart_rx_start(machine_uart_obj_t *self);
+void machine_uart_attach_to_repl(machine_uart_obj_t *self, uint8_t attached);
 
 /* esp8266 */
 void machine_uart_set_at_agent(machine_uart_obj_t *self, at_agent_t *at_agent);
