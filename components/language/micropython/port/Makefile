@@ -1,6 +1,4 @@
 BUILD = build
-# BOARD ?= BearPi_STM32L431RC
-# BOARD_DIR = E:/WorkSpace/VSCode/VSCode_C_MCU/TencentOS-tiny/board/BearPi_STM32L431RC/KEIL/micropython_extra_demo/board
 ifneq ($(PORT_BOARD_DIR), )
 BOARD_DIR := $(subst \,/,$(PORT_BOARD_DIR))
 else
