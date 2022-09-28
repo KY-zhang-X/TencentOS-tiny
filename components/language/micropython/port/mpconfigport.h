@@ -181,7 +181,7 @@ typedef long mp_off_t;
         extern void mp_handle_pending(bool); \
         mp_handle_pending(true); \
         MP_THREAD_GIL_EXIT(); \
-        /* tos_task_delay(1); */ \
+        tos_task_delay(1); \
         MP_THREAD_GIL_ENTER(); \
     } while (0);
 #else
