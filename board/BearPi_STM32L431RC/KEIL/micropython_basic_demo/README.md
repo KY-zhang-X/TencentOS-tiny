@@ -1,9 +1,11 @@
+# 如何使用 TencentOS-tiny 上移植的 MicroPython 组件
+
 ## 1 基础Keil工程
 
 ### 1.1 源代码
 
 * micropython/py 组中添加
-  * components/language/micropython/py 目录下的*.c文件
+  * components/language/micropython/py 目录下的 *.c 文件
 
 * micropython/shared 组中添加：
   * components/language/micropython/shared/readline 目录下的 readline.c 文件
@@ -45,7 +47,7 @@
 
 ### 1.4 编译脚本
 
-MicroPython 采用了字符串驻留（String interning）技术节省 ROM 和 RAM 空间，在工程编译前需要先生成内部字符串 QSTR（uniQue STRing）。本工程中采用 Makefile 搜索代码中所有需要预先生成的 QSTR，然后在工程目录下的 genhdr 目录中生成 qstrdefs.generated.h 文件。关于QSTR的更详细信息，可以在[官方文档](https://docs.micropython.org/en/latest/develop/qstr.html)中获取。
+MicroPython 采用了字符串驻留（String interning）技术节省 ROM 和 RAM 空间，在工程编译前需要先生成内部字符串 QSTR（uniQue STRing）。本工程中采用 Makefile 搜索代码中所有需要预先生成的 QSTR，然后在工程目录下的 genhdr 目录中生成 qstrdefs.generated.h 等文件。关于QSTR的更详细信息，可以在[官方文档](https://docs.micropython.org/en/latest/develop/qstr.html)中获取。
 
 在工程配置界面 User 页面下的 Before Build/Rebuild 中添加以下两个命令：
 
@@ -77,25 +79,25 @@ MicroPython对ROM的需求量较大，上述基础Keil工程编译后需要占�
 
 1. micropython_extra_demo 工程目录下包含了小熊派开发板的Keil外部Flash下载算法文件 BearPi_W25Q64JV.FLM，将该文件拷贝到 **<Keil软件目录>/ARM/Flash** 目录下。
 
-2. 在Keil工程中配置外部 ROM，并选择Flash下载算法
+2. 在Keil工程中配置外部 ROM，并选择 Flash 下载算法
 
-   * 在工程配置的 Target 页面中，添加一个ROM区域，起始地址为**0x90000000**，区域大小为 **0x800000**（ROM区域大小取决于外部Flash芯片容量）
+   * 在工程配置的 Target 页面中，添加一个 ROM 区域，起始地址为 **0x90000000**，区域大小为 **0x800000**（ROM区域大小取决于外部 Flash 芯片容量）
 
      ![external_flash_1](./imgs/external_flash_1.png)
 
-   * 在Debug 页面中，点击右上角的 Settings，选择 Flash Download 选项卡，进入下图界面
+   * 在 Debug 页面中，点击右上角的 Settings，选择 Flash Download 选项卡，进入下图界面
 
      ![external_flash_2](./imgs/external_flash_2.png)
 
-   * 添加描述为**“BearPi W25Q84JV 8MB Flash”**的Flash下载算法，并将右上角的Size调整到**0x8000**。
+   * 添加描述为**“BearPi W25Q84JV 8MB Flash”**的 Flash 下载算法，并将右上角的 Size 调整到**0x8000**。
 
-3. 将特定文件或者组的存储位置改到外部ROM中。
+3. 将特定文件或者组的存储位置改到外部 ROM 中。
 
    ![external_flash_3](./imgs/external_flash_3.png)
 
-4. 添加W25Q64JV的驱动代码，启用内存映射模式。（在MicroPython的工程中，只需要启用第二节 “[功能配置和扩展](#2-功能配置和扩展)” 中的`MP_USING_QSPI_FLASH`宏并添加相应文件即可）
+4. 添加 W25Q64JV 的驱动代码，启用内存映射模式。（在 MicroPython 的工程中，只需要启用第二节 “[功能配置和扩展](#2-功能配置和扩展)” 中的`MP_USING_QSPI_FLASH`宏并添加相应文件即可）
 
-> 中断相关的代码以及内存映射模式启动前就需要执行的代码，不能放在外部Flash中。推荐将micropython相关的代码（除了移植的代码）都放在外部Flash中。
+> 中断相关的代码以及内存映射模式启动前就需要执行的代码，不能放在外部 Flash 中。推荐将 MicroPython 相关的代码（除了移植的代码）都放在外部 Flash 中。
 
 ## 2 功能配置和扩展
 
@@ -103,14 +105,14 @@ MicroPython对ROM的需求量较大，上述基础Keil工程编译后需要占�
 
 mpconfigboard.h 主要由宏定义构成，可以使用的定义以及对应的含义如下表：
 
-| 名称                     | 含义                                    | 取值范围                                              | 说明                                                         |
-| ------------------------ | --------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
-| MICROPY_HW_BOARD_NAME    | 开发板名称                              | 字符串                                                |                                                              |
-| MICROPY_HW_MCU_NAME      | 微控制器名称                            | 字符串                                                |                                                              |
-| MICROPY_HW_UART_NUM      | UART数量                                | 整数                                                  | 需要与tos_hal的实现一致                                      |
-| MICROPY_HW_UART_REPL     | 用于MicroPython交互式命令行的UART的编号 | 整数                                                  | 需要与tos_hal的实现一致                                      |
-| MICROPY_HW_SPI_NUM       | SPI数量                                 | 整数                                                  | 需要与tos_hal的实现一致                                      |
-| MICROPY_CONFIG_ROM_LEVEL | ROM水平                                 | MICROPY_CONFIG_ROM_LEVEL<br>\_<BASIC/EXTRA>\_FEATURES | 代表MicroPython的功能裁剪程度，只列出两个典型值，其他取值需要参考py/mpconfig.h文件 |
+| 名称                     | 含义                                        | 取值范围                                              | 说明                                                         |
+| ------------------------ | ------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------ |
+| MICROPY_HW_BOARD_NAME    | 开发板名称                                  | 字符串                                                |                                                              |
+| MICROPY_HW_MCU_NAME      | 微控制器名称                                | 字符串                                                |                                                              |
+| MICROPY_HW_UART_NUM      | UART数量                                    | 整数                                                  | 需要与 tos_hal 的实现一致                                    |
+| MICROPY_HW_UART_REPL     | 用于 MicroPython 交互式命令行的 UART 的编号 | 整数                                                  | 需要与 tos_hal 的实现一致                                    |
+| MICROPY_HW_SPI_NUM       | SPI 数量                                    | 整数                                                  | 需要与 tos_hal 的实现一致                                    |
+| MICROPY_CONFIG_ROM_LEVEL | ROM 水平                                    | MICROPY_CONFIG_ROM_LEVEL<br>\_<BASIC/EXTRA>\_FEATURES | 代表 MicroPython 的功能裁剪程度，这里只列出两个典型值，其他取值需要参考 py/mpconfig.h 文件 |
 
 除了以上配置之外，还有一些可选的功能配置，采用定义`MP_USING_xxx`宏的形式进行功能扩展：
 
@@ -181,29 +183,29 @@ mpremote还包含其他功能，参考[官方文档]( https://docs.micropython.o
 
 进入 REPL 后，可以使用 help() 命令，查看与 MicroPython 控制命令相关的提示信息：
 
-<img src="./imgs/help().png" alt="help()" style="zoom:80%;" />
+<img src="./imgs/help().png" alt="help()" style="zoom: 67%;" />
 
-其中Ctrl-C可以用来中断正在运行的程序，Ctrl-D可以用来软复位，Ctrl-E可以进入粘贴模式。
+其中 Ctrl-C 可以用来中断正在运行的程序，Ctrl-D 可以用来软复位，Ctrl-E 可以进入粘贴模式。
 
 #### 3.2.2 help('modules') 命令
 
 在交互式解释器中可以使用 help('modules') 命令查看当前可以引入的模块：
 
-<img src="./imgs/help('modules').png" alt="help('modules')" style="zoom:80%;" />
+<img src="./imgs/help('modules').png" alt="help('modules')" style="zoom: 67%;" />
 
 #### 3.2.3 粘贴模式
 
-在正常交互模式下，输入Ctrl-E可以进入粘贴模式。
+在正常交互模式下，输入 Ctrl-E 可以进入粘贴模式。
 
-在粘贴模式下可以方便地将python脚本粘贴到REPL中。
+在粘贴模式下可以方便地将 python 脚本粘贴到 REPL 中。
 
 > 由于输入缓冲区大小只有512B，所以比较长的脚本需要分段粘贴。
 
-粘贴完成后，输入Ctrl-D可以退出粘贴模式，并开始执行脚本。
+粘贴完成后，输入 Ctrl-D 可以退出粘贴模式，并开始执行脚本。
 
-下图展示了使用粘贴模式粘贴pin.py脚本的情况：
+下图展示了使用粘贴模式粘贴 pin.py 脚本的情况：
 
-<img src="./imgs/paste_mode_pin_py.png" alt="paste_mode_pin_py" style="zoom:80%;" />
+<img src="./imgs/paste_mode_pin_py.png" alt="paste_mode_pin_py" style="zoom: 67%;" />
 
 #### 3.2.4 其他功能
 
@@ -211,7 +213,7 @@ REPL还有自动缩进，自动补全以及特殊变量"_"等功能，详细内�
 
 ### 3.3 自动执行脚本
 
-对于启用文件系统的MicroPython工程，可以在文件系统根目录中存放 boot.py 和 main.py 脚本，这两个脚本会在 MicroPython 启动时依次执行。
+对于启用文件系统的 MicroPython 工程，可以在文件系统根目录中存放 boot.py 和 main.py 脚本，这两个脚本会在 MicroPython 启动时依次执行。
 
 ## 4 示例工程和示例脚本说明
 
@@ -261,7 +263,7 @@ REPL还有自动缩进，自动补全以及特殊变量"_"等功能，详细内�
 
   脚本运行现象是：LED每过0.5s亮灭变化一次；按下按键1，打印一行文本 ”key1 is pressed“，释放按键1，打印一行文本 ”key1 is released“；按下按键2，LED不再闪烁，脚本退出。
 
-* thread.py：脚本展示了_thread模块的使用方法
+* thread.py：脚本展示了 _thread 模块的使用方法
 
   ```python
   import _thread
@@ -287,7 +289,7 @@ REPL还有自动缩进，自动补全以及特殊变量"_"等功能，详细内�
 
   脚本运行现象是：创建四个线程，序号分别为0~3，每个线程打印自己的序号后退出。
 
-* os.py：该脚本展示了uos模块中的文件操作和目录操作
+* os.py：该脚本展示了 uos 模块中的文件操作和目录操作
 
   > 该脚本只有在启用 VFS 的前提下才能运行
   
@@ -331,7 +333,7 @@ REPL还有自动缩进，自动补全以及特殊变量"_"等功能，详细内�
   os.unlink('test_dir2/test_file')
   print(os.listdir('test_dir2'))
   os.unlink('test_dir2')
-print(os.listdir())
+  print(os.listdir())
   ```
 
   脚本运行现象是：输出以下内容
