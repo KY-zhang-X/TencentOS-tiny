@@ -5,8 +5,8 @@ import utime as time
 
 WIFI_SSID='KYzhang'
 WIFI_PASSWORD='kyzhangx'
-SERVER_HOST='212.64.86.188'
-SERVER_PORT=50000
+SERVER_HOST='117.50.111.72'
+SERVER_PORT=8001
 
 if __name__ == '__main__':
 
